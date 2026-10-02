@@ -1,0 +1,10 @@
+s1|This is Sprite. An AI colleague that takes the repetitive work off your plate.
+s2|Let's take an example: Kurt's Painting, a painting company. First, Sprite gets a business brain. It holds, for example, the prices per square meter, the discounts, the terms, and the way Kurt writes his emails.
+s3|Then an email comes in. Els asks for a quote to paint her living room, kitchen and hallway.
+s4|Sprite reads the email, looks up the right prices in the brain, sees she qualifies for a volume discount and the six percent VAT rate, and does the math instantly.
+s5|Then it creates the quote straight in Billit. With the right lines, the discount, and the VAT.
+s6|And the reply is already waiting in the inbox, with the quote attached. Kurt just has to hit send.
+s7|But Sprite can do a lot more. For example: someone adds a new customer in Billit? Sprite automatically copies that data into Bowsoft. No double typing.
+s8|Or, for example, a recurring task. Every working day at six p.m., it puts the sales figures in Excel, calculates each salesperson's commission, and drafts an email with their results.
+s9|And there are plenty more examples. Reminders for unpaid invoices, the weekly schedule for your crews, or appointments in your calendar.
+s10|Sprite. Less clicking. More business.
