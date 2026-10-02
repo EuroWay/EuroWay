@@ -1,0 +1,8 @@
+s1|Dit is Sprite. Jouw AI-collega die het terugkerende werk van je overneemt.
+s2|We starten met een nieuw bedrijf: Kantoorpunt, uit Gent. Eerst bouwt Sprite een businessbrein. Prijslijsten, kortingen, leveringsvoorwaarden en jullie schrijfstijl. Alles wat een goede collega moet weten.
+s3|Dan komt er een mail binnen. Sarah van Studio Vlieg vraagt een offerte voor twaalf bureaustoelen en zes zit-sta bureaus.
+s4|Sprite leest de mail, zoekt in het brein de juiste prijzen en kortingen op, en rekent alles meteen uit.
+s5|Daarna maakt hij de offerte rechtstreeks aan in Billit. Met de juiste lijnen, de volumekorting en de btw.
+s6|En het antwoord staat al klaar in je mailbox, met de offerte in bijlage. Jij drukt enkel nog op verzenden.
+s7|Sprite doet ook terugkerende taken. Elke werkdag om zes uur zet hij de verkoopcijfers in Excel, berekent hij de commissie per verkoper, en zet hij voor iedereen een mail met hun resultaten klaar.
+s8|Sprite. Minder klikken, meer ondernemen.

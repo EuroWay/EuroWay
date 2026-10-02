@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Sprite demo</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --or:#FF5A0A; --or2:#FF7A2E; --orSoft:#FFE9DC; --ink:#151515; --ink2:#5d5d5d; --ink3:#9a9a9a;
+  --bg:#EEEEEC; --card:#ffffff; --line:#ececea; --green:#1F9D55; --exl:#107C41;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:'Figtree',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+#root{position:absolute;inset:0;overflow:hidden}
+.bgglow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none}
+.scene{position:absolute;inset:0;opacity:0;perspective:2400px;perspective-origin:62% 45%}
+.abs{position:absolute}
+.copy{position:absolute;left:150px;top:0;width:560px;height:1080px;display:flex;flex-direction:column;justify-content:center}
+.copy .ey{font-size:17px;font-weight:700;letter-spacing:.14em;color:var(--or);text-transform:uppercase;margin-bottom:22px}
+.copy h1{font-family:'Inter Tight';font-weight:600;font-size:76px;line-height:1.0;letter-spacing:-.035em;margin-bottom:26px}
+.copy p{font-size:25px;line-height:1.45;color:var(--ink2);max-width:500px}
+.copy > *{will-change:transform,opacity}
+.p3d{transform-style:preserve-3d}
+.shadow{box-shadow:0 60px 120px -30px rgba(40,25,10,.28),0 20px 40px -20px rgba(40,25,10,.18)}
+/* phone */
+.phone{position:absolute;width:410px;height:870px;border-radius:66px;background:#111;padding:11px;transform-style:preserve-3d}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:56px;background:#fff;overflow:hidden}
+.phone .island{position:absolute;top:13px;left:50%;width:118px;height:34px;margin-left:-59px;background:#000;border-radius:20px;z-index:5}
+.phone .sb{position:absolute;top:18px;left:38px;right:34px;display:flex;justify-content:space-between;font-weight:700;font-size:16px;z-index:4}
+/* window */
+.win{position:absolute;background:#fff;border-radius:20px;overflow:hidden;transform-style:preserve-3d}
+.win .bar{height:44px;background:#f6f6f4;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 18px;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%}
+.chip{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #ececec;border-radius:999px;padding:9px 18px 9px 14px;font-weight:600;font-size:17px;color:#666;white-space:nowrap}
+.card{background:#fff;border-radius:22px}
+.pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px}
+.cursor{position:absolute;width:38px;height:38px;z-index:50;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+.ripple{position:absolute;width:70px;height:70px;border-radius:50%;border:3px solid var(--or);z-index:49;margin:-35px 0 0 -35px;opacity:0}
+#cap{position:absolute;left:50%;bottom:54px;transform:translateX(-50%);max-width:1300px;padding:14px 30px;border-radius:18px;background:rgba(18,18,18,.82);color:#fff;font-size:30px;font-weight:600;letter-spacing:-.005em;text-align:center;line-height:1.3;opacity:0;z-index:100;backdrop-filter:blur(8px)}
+.mono{font-family:'JetBrains Mono',monospace}
+.tnum{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="bgglow" id="g1" style="width:900px;height:900px;background:#FFB27A"></div>
+  <div class="bgglow" id="g2" style="width:700px;height:700px;background:#FFD7BD"></div>
+
+  <!-- ================= S1 INTRO ================= -->
+  <div class="scene" id="s1">
+    <div class="abs p3d" id="s1ring" style="left:960px;top:470px;width:0;height:0"></div>
+    <div class="abs" id="s1sprite" style="left:810px;top:250px;width:300px;height:300px"></div>
+    <div class="abs" id="s1h" style="left:0;width:1920px;top:600px;text-align:center;font-family:'Inter Tight';font-weight:600;font-size:96px;letter-spacing:-.04em">Maak kennis met Sprite.</div>
+    <div class="abs" id="s1p" style="left:0;width:1920px;top:722px;text-align:center;font-size:30px;color:var(--ink2)">Jouw AI-collega voor mails, offertes en terugkerende taken.</div>
+  </div>
+
+  <!-- ================= S2 SETUP + BRAIN ================= -->
+  <div class="scene" id="s2">
+    <div class="copy" id="s2a">
+      <div class="ey">Stap 1 · Bedrijf opzetten</div>
+      <h1>Kantoorpunt krijgt een eigen Sprite.</h1>
+      <p>Een kleur, een vorm, een naam. Tien seconden en je AI-collega staat klaar.</p>
+    </div>
+    <div class="copy" id="s2b">
+      <div class="ey">Stap 2 · Businessbrein</div>
+      <h1>Eerst een brein voor je bedrijf.</h1>
+      <p>Prijzen, kortingen, voorwaarden en jullie schrijfstijl. Sprite leert het één keer en onthoudt het.</p>
+    </div>
+    <div class="phone shadow" id="s2phone" style="left:1020px;top:80px">
+      <div class="scr">
+        <div class="island"></div>
+        <div class="sb"><span>09:41</span><span>●●● 5G</span></div>
+        <div style="position:absolute;top:68px;left:26px;width:52px;height:52px;border-radius:50%;border:1.5px solid #e5e5e5;display:flex;align-items:center;justify-content:center;font-size:26px">✕</div>
+        <div style="position:absolute;top:142px;left:28px;font-family:'Inter Tight';font-weight:600;font-size:34px;letter-spacing:-.03em">Sprite aanmaken</div>
+        <div id="s2prev" style="position:absolute;top:200px;left:26px;right:26px;height:150px;border-radius:24px;background:#f3f3f2;display:flex;align-items:center;justify-content:center"></div>
+        <div style="position:absolute;top:368px;left:30px;font-weight:600;font-size:15px">Kleur</div>
+        <div id="s2colors" style="position:absolute;top:396px;left:26px;right:26px;display:grid;grid-template-columns:repeat(6,1fr);row-gap:10px;justify-items:center"></div>
+        <div style="position:absolute;top:500px;left:30px;font-weight:600;font-size:15px">Vorm</div>
+        <div id="s2shapes" style="position:absolute;top:528px;left:26px;right:26px;display:grid;grid-template-columns:repeat(4,1fr);row-gap:12px;justify-items:center"></div>
+        <div style="position:absolute;top:668px;left:30px;font-weight:600;font-size:15px;color:#888">Naam</div>
+        <div style="position:absolute;top:694px;left:26px;right:26px;height:56px;border-radius:16px;border:1.5px solid #e6e6e6;display:flex;align-items:center;padding:0 18px;font-size:20px"><span id="s2name"></span><span id="s2caret" style="width:2px;height:24px;background:var(--or);margin-left:2px"></span></div>
+        <div id="s2btn" style="position:absolute;bottom:34px;left:26px;right:26px;height:58px;border-radius:18px;background:#151515;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px">Sprite aanmaken</div>
+      </div>
+      <svg class="cursor" id="s2cur" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15.5 L12.5 22 L15.5 20.6 L12.2 14.2 L19 14 Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div class="ripple" id="s2rip"></div>
+    </div>
+    <!-- brain -->
+    <div class="abs p3d" id="s2brain" style="left:770px;top:130px;width:1060px;height:800px">
+      <div class="abs" id="s2bhead" style="left:0;top:0;width:1060px;display:flex;align-items:center;gap:22px">
+        <div id="s2bsprite" style="width:84px;height:84px"></div>
+        <div style="flex:1">
+          <div style="font-family:'Inter Tight';font-weight:600;font-size:34px;letter-spacing:-.02em">Businessbrein · Kantoorpunt BV</div>
+          <div style="display:flex;align-items:center;gap:16px;margin-top:10px">
+            <div style="flex:1;height:10px;border-radius:6px;background:#e3e3e0;overflow:hidden"><div id="s2bar" style="height:100%;width:0;background:linear-gradient(90deg,var(--or),var(--or2));border-radius:6px"></div></div>
+            <div id="s2pct" class="tnum" style="font-weight:700;font-size:20px;width:64px;text-align:right">0%</div>
+          </div>
+        </div>
+      </div>
+      <div class="abs p3d" id="s2grid" style="left:0;top:120px;width:1060px;height:640px"></div>
+    </div>
+  </div>
+
+  <!-- ================= S3 MAIL IN ================= -->
+  <div class="scene" id="s3">
+    <div class="copy" id="s3c">
+      <div class="ey">Stap 3 · Er komt een mail binnen</div>
+      <h1>Een klant vraagt een offerte.</h1>
+      <p>Sarah van Studio Vlieg zoekt 12 bureaustoelen en 6 zit-sta bureaus voor haar nieuwe kantoor.</p>
+    </div>
+    <div class="win shadow" id="s3win" style="left:760px;top:190px;width:1060px;height:680px">
+      <div class="bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div>
+        <div style="margin-left:18px;display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;color:#555"><span id="gm1"></span>Gmail · info@kantoorpunt.be</div></div>
+      <div style="display:flex;height:636px">
+        <div style="width:190px;background:#fafaf9;border-right:1px solid var(--line);padding:22px 16px;font-size:16px;font-weight:600;color:#555">
+          <div style="background:var(--orSoft);color:var(--or);border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between">Inbox <span id="s3cnt">11</span></div>
+          <div style="padding:10px 14px">Concepten</div><div style="padding:10px 14px">Verzonden</div><div style="padding:10px 14px">Archief</div>
+        </div>
+        <div style="width:330px;border-right:1px solid var(--line);position:relative;overflow:hidden" id="s3list"></div>
+        <div style="flex:1;padding:30px 34px;position:relative" id="s3read">
+          <div id="s3mail" style="opacity:0">
+            <div style="font-family:'Inter Tight';font-weight:600;font-size:25px;letter-spacing:-.015em;line-height:1.25">Offerteaanvraag: 12 bureaustoelen + 6 zit-sta bureaus</div>
+            <div style="display:flex;align-items:center;gap:14px;margin:20px 0 22px">
+              <div style="width:46px;height:46px;border-radius:50%;background:#5B7CFA;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:18px">SP</div>
+              <div><div style="font-weight:700;font-size:17px">Sarah Peeters <span style="font-weight:500;color:#888">&lt;sarah@studiovlieg.be&gt;</span></div><div style="font-size:15px;color:#888">aan info@kantoorpunt.be · 14:02</div></div>
+            </div>
+            <div id="s3body" style="font-size:19px;line-height:1.6;color:#333;white-space:pre-wrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="abs" id="s3toast" style="left:1430px;top:120px;width:400px;background:#fff;border-radius:20px;padding:16px 18px;display:flex;gap:14px;align-items:center" >
+      <div id="gm2" style="width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center"></div>
+      <div><div style="font-weight:700;font-size:16px">Sarah Peeters</div><div style="font-size:15px;color:#666">Offerteaanvraag: 12 bureaustoelen + 6…</div></div>
+    </div>
+    <div class="abs chip" id="s3chip" style="left:1300px;top:820px;font-size:19px;padding:12px 22px 12px 14px;color:#222"><span id="s3cs" style="width:34px;height:34px;display:inline-block"></span>Sprite heeft de aanvraag opgepikt</div>
+  </div>
+
+  <!-- ================= S4 THINK ================= -->
+  <div class="scene" id="s4">
+    <div class="copy" id="s4c">
+      <div class="ey">Stap 4 · Sprite denkt mee</div>
+      <h1>Prijzen en kortingen uit het brein.</h1>
+      <p>Sprite zoekt de juiste prijzen, past de volumekorting toe en rekent alles in een paar seconden uit.</p>
+    </div>
+    <div class="phone shadow" id="s4phone" style="left:790px;top:70px">
+      <div class="scr" style="background:#fff">
+        <div class="island"></div>
+        <div class="sb"><span>14:02</span><span>●●● 5G</span></div>
+        <div style="position:absolute;top:60px;left:18px;width:50px;height:50px;border-radius:50%;border:1.5px solid #e6e6e6"></div>
+        <div style="position:absolute;top:60px;right:18px;width:50px;height:50px;border-radius:50%;border:1.5px solid #e6e6e6"></div>
+        <div id="s4av" style="position:absolute;top:52px;left:50%;margin-left:-33px;width:66px;height:66px"></div>
+        <div style="position:absolute;top:118px;left:0;right:0;text-align:center;font-weight:700;font-size:14px">Kantoorpunt</div>
+        <div id="s4feed" style="position:absolute;top:156px;left:20px;right:20px;bottom:100px"></div>
+        <div style="position:absolute;bottom:26px;left:16px;right:16px;display:flex;gap:10px;align-items:center">
+          <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid #e6e6e6;display:flex;align-items:center;justify-content:center;font-size:28px;color:#333">+</div>
+          <div style="flex:1;height:52px;border-radius:26px;border:1.5px solid #e6e6e6;display:flex;align-items:center;padding:0 18px;color:#aaa;font-size:17px">Bericht</div>
+        </div>
+      </div>
+    </div>
+    <div class="abs p3d" id="s4cards" style="left:1250px;top:110px;width:600px;height:800px"></div>
+    <div class="abs pill" id="s4speed" style="left:1290px;top:60px;background:#1a1a1a;color:#fff">⏩ 4× versneld</div>
+  </div>
+
+  <!-- ================= S5 BILLIT ================= -->
+  <div class="scene" id="s5">
+    <div class="copy" id="s5c">
+      <div class="ey">Stap 5 · Boekhouding</div>
+      <h1>De offerte staat meteen in Billit.</h1>
+      <p>Juiste klant, juiste lijnen, volumekorting en btw. Als concept, klaar om na te kijken.</p>
+    </div>
+    <div class="win shadow" id="s5win" style="left:760px;top:170px;width:1080px;height:720px">
+      <div class="bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div>
+        <div style="margin-left:18px;font-weight:600;font-size:16px;color:#555">app.billit.be / offertes / OF-2026-0142</div></div>
+      <div style="display:flex;height:676px">
+        <div style="width:200px;background:#13294B;color:#cfd8e6;padding:24px 14px;font-size:16px;font-weight:600">
+          <div style="color:#fff;font-family:'Inter Tight';font-weight:700;font-size:28px;letter-spacing:-.02em;padding:0 12px 26px">Billit</div>
+          <div style="padding:10px 12px">Dashboard</div><div style="padding:10px 12px">Verkoop</div>
+          <div style="padding:10px 12px;background:rgba(255,255,255,.12);border-radius:10px;color:#fff">Offertes</div>
+          <div style="padding:10px 12px">Klanten</div><div style="padding:10px 12px">Producten</div><div style="padding:10px 12px">Rapporten</div>
+        </div>
+        <div style="flex:1;padding:28px 34px;position:relative">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="font-family:'Inter Tight';font-weight:600;font-size:30px;letter-spacing:-.02em">Offerte OF-2026-0142</div>
+            <div class="pill" style="background:#FFF2E0;color:#B8650A">Concept</div>
+            <div class="pill" id="s5by" style="background:var(--orSoft);color:var(--or);margin-left:auto"><span id="s5bys" style="width:22px;height:22px;display:inline-block"></span>Aangemaakt door Sprite</div>
+          </div>
+          <div style="display:flex;gap:40px;margin:24px 0 26px;font-size:16px;color:#777">
+            <div>Klant<div id="s5klant" style="color:#111;font-weight:700;font-size:18px;margin-top:4px;min-height:24px"></div></div>
+            <div>Datum<div style="color:#111;font-weight:700;font-size:18px;margin-top:4px">02/10/2026</div></div>
+            <div>Geldig tot<div style="color:#111;font-weight:700;font-size:18px;margin-top:4px">01/11/2026</div></div>
+            <div>Referentie<div style="color:#111;font-weight:700;font-size:18px;margin-top:4px">Mail 02/10 · Sarah P.</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:2.6fr .8fr 1.2fr .9fr 1.3fr;font-size:15px;font-weight:700;color:#888;padding:0 6px 10px;border-bottom:1.5px solid #eee"><div>Omschrijving</div><div>Aantal</div><div>Prijs</div><div>Korting</div><div style="text-align:right">Totaal</div></div>
+          <div id="s5rows"></div>
+          <div id="s5tot" style="position:absolute;right:34px;bottom:30px;width:400px;font-size:18px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="abs chip" id="s5chip" style="left:700px;top:880px;font-size:19px;color:#222;padding:12px 22px 12px 14px"><span style="width:30px;height:30px;border-radius:8px;background:#13294B;color:#fff;font-weight:800;font-size:17px;display:inline-flex;align-items:center;justify-content:center">B</span>Billit gebruikt</div>
+    <div class="abs" id="s5toast" style="left:1450px;top:110px;background:#fff;border-radius:18px;padding:16px 22px;font-weight:700;font-size:19px;display:flex;align-items:center;gap:12px"><span style="width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:18px">✓</span>Offerte aangemaakt in 14 sec</div>
+  </div>
+
+  <!-- ================= S6 REPLY ================= -->
+  <div class="scene" id="s6">
+    <div class="copy" id="s6c">
+      <div class="ey">Stap 6 · Klaar om te versturen</div>
+      <h1>Het antwoord staat al klaar.</h1>
+      <p>In de juiste toon, met de offerte als bijlage. Jij leest na en drukt op verzenden.</p>
+    </div>
+    <div class="win shadow" id="s6win" style="left:790px;top:120px;width:1010px;height:730px">
+      <div class="bar" style="justify-content:space-between"><div style="display:flex;gap:8px"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div>
+        <div class="pill" style="background:var(--orSoft);color:var(--or)"><span id="s6bs" style="width:22px;height:22px;display:inline-block"></span>Concept klaargezet door Sprite</div></div>
+      <div style="padding:20px 36px;font-size:17px;color:#777;border-bottom:1px solid var(--line)">Aan <b style="color:#111;font-weight:600">sarah@studiovlieg.be</b></div>
+      <div style="padding:16px 36px;font-size:17px;color:#777;border-bottom:1px solid var(--line)">Onderwerp <b style="color:#111;font-weight:600">Re: Offerteaanvraag: 12 bureaustoelen + 6 zit-sta bureaus</b></div>
+      <div id="s6body" style="padding:24px 36px;font-size:19px;line-height:1.6;color:#222;white-space:pre-wrap;height:390px"></div>
+      <div style="position:absolute;left:36px;right:36px;bottom:28px;display:flex;align-items:center;gap:14px">
+        <div class="chip" id="s6att" style="color:#333"><span style="width:28px;height:32px;border-radius:5px;background:#E5322D;color:#fff;font-size:10px;font-weight:800;display:inline-flex;align-items:flex-end;justify-content:center;padding-bottom:4px">PDF</span>Offerte_OF-2026-0142.pdf</div>
+        <div style="margin-left:auto;font-size:16px;color:#999" id="s6wait">Wacht op jouw akkoord</div>
+        <div id="s6send" style="height:56px;padding:0 30px;border-radius:28px;background:var(--or);color:#fff;font-weight:700;font-size:19px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 24px -8px rgba(255,90,10,.6)">➤ Verzenden</div>
+      </div>
+    </div>
+    <svg class="cursor" id="s6cur" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15.5 L12.5 22 L15.5 20.6 L12.2 14.2 L19 14 Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    <div class="ripple" id="s6rip"></div>
+    <div class="abs" id="s6saved" style="left:1500px;top:70px;background:#151515;color:#fff;border-radius:18px;padding:16px 24px;font-size:18px;font-weight:600">⏱ Tijd bespaard: <span style="color:var(--or2)">18 min</span></div>
+  </div>
+
+  <!-- ================= S7 ROUTINES ================= -->
+  <div class="scene" id="s7">
+    <div class="copy" id="s7c">
+      <div class="ey">Routines · Terugkerende taken</div>
+      <h1>Elke werkdag om 18:00. Vanzelf.</h1>
+      <p>Verkoopcijfers in Excel, commissies per verkoper berekend en voor iedereen een mail klaar.</p>
+    </div>
+    <div class="abs card shadow p3d" id="s7rout" style="left:900px;top:200px;width:820px;padding:36px 40px">
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="width:62px;height:62px;border-radius:18px;background:var(--orSoft);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FF5A0A" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <div style="flex:1"><div style="font-family:'Inter Tight';font-weight:600;font-size:32px;letter-spacing:-.02em">Dagrapport sales &amp; commissies</div>
+          <div style="font-size:19px;color:#777;margin-top:4px">Elke werkdag · ma t/m vr · 18:00</div></div>
+        <div id="s7tog" style="width:74px;height:42px;border-radius:21px;background:#ddd;position:relative"><div id="s7knob" style="position:absolute;top:4px;left:4px;width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2)"></div></div>
+      </div>
+      <div id="s7steps" style="margin-top:28px"></div>
+    </div>
+    <div class="abs" id="s7clock" style="left:930px;top:300px;width:760px;text-align:center">
+      <div style="font-size:24px;font-weight:600;color:#888;margin-bottom:10px">vrijdag 2 oktober</div>
+      <div id="s7time" class="tnum" style="font-family:'Inter Tight';font-weight:600;font-size:230px;letter-spacing:-.05em;line-height:1">17:59</div>
+      <div class="pill" style="background:var(--or);color:#fff;font-size:20px;padding:10px 20px;margin-top:20px" id="s7run">Routine gestart</div>
+    </div>
+    <div class="win shadow" id="s7xl" style="left:700px;top:220px;width:700px;height:560px">
+      <div style="height:48px;background:var(--exl);color:#fff;display:flex;align-items:center;padding:0 20px;gap:12px;font-weight:600;font-size:17px"><span style="width:28px;height:28px;border-radius:6px;background:#fff;color:var(--exl);font-weight:900;display:inline-flex;align-items:center;justify-content:center">X</span>Sales_dagrapport_2026-10-02.xlsx</div>
+      <div style="height:40px;border-bottom:1px solid #e3e3e3;display:flex;align-items:center;padding:0 16px;gap:14px;font-size:15px;color:#666"><span style="font-weight:700;color:#333">D2</span><span style="color:#bbb">|</span><span class="mono" id="s7fx">fx</span></div>
+      <div id="s7tbl" style="font-size:18px"></div>
+    </div>
+    <div class="abs p3d" id="s7mails" style="left:1405px;top:170px;width:560px;height:700px"></div>
+  </div>
+
+  <!-- ================= S8 OUTRO ================= -->
+  <div class="scene" id="s8">
+    <div class="abs" id="s8sprite" style="left:860px;top:210px;width:200px;height:200px"></div>
+    <div class="abs" id="s8h" style="left:0;width:1920px;top:450px;text-align:center;font-family:'Inter Tight';font-weight:600;font-size:110px;letter-spacing:-.045em">Meet Sprite</div>
+    <div class="abs" id="s8p" style="left:0;width:1920px;top:588px;text-align:center;font-size:30px;color:var(--ink2)">Jouw AI-team. Op iPhone, Mac en web.</div>
+    <div class="abs" id="s8row" style="left:0;width:1920px;top:690px;display:flex;justify-content:center;gap:22px"></div>
+  </div>
+
+  <div id="cap"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cl=x=>x<0?0:x>1?1:x;
+const P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.5,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const L=(a,b,x)=>a+(b-a)*x;
+const eur=v=>'€ '+v.toLocaleString('nl-BE',{minimumFractionDigits:2,maximumFractionDigits:2});
+function vis(t,a,b,f=.5){return Math.min(P(t,a,a+f),1-P(t,b-f,b))}
+
+/* ---------- sprite svg ---------- */
+function shapePath(kind){
+  switch(kind){
+    case 'flower':{let s='';for(let i=0;i<6;i++){const a=i*Math.PI/3-Math.PI/2;s+=`<circle cx="${50+24*Math.cos(a)}" cy="${50+24*Math.sin(a)}" r="22"/>`}return s+'<circle cx="50" cy="50" r="26"/>'}
+    case 'sparkle':return '<path d="M50 4 Q56 44 96 50 Q56 56 50 96 Q44 56 4 50 Q44 44 50 4Z"/>';
+    case 'square':return '<rect x="10" y="10" width="80" height="80" rx="24"/>';
+    case 'badge':{let p=[];for(let i=0;i<32;i++){const a=i*Math.PI/16,r=i%2?40:46;p.push((50+r*Math.cos(a)).toFixed(1)+','+(50+r*Math.sin(a)).toFixed(1))}return `<polygon points="${p.join(' ')}" stroke-linejoin="round" stroke-width="6"/>`}
+    case 'star':{let p=[];for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,r=i%2?22:46;p.push((50+r*Math.cos(a)).toFixed(1)+','+(54+r*Math.sin(a)).toFixed(1))}return `<polygon points="${p.join(' ')}" stroke-linejoin="round" stroke-width="8"/>`}
+    case 'blob':return '<path d="M30 18 C55 2 92 20 90 55 C88 88 50 96 26 84 C4 72 6 34 30 18Z"/>';
+    case 'clover':return '<circle cx="50" cy="28" r="21"/><circle cx="28" cy="50" r="21"/><circle cx="72" cy="50" r="21"/><circle cx="50" cy="72" r="21"/><circle cx="50" cy="50" r="20"/>';
+    case 'tri':return '<path d="M50 10 C62 10 92 70 86 82 C80 92 20 92 14 82 C8 70 38 10 50 10Z"/>';
+  }
+}
+function sprite(kind,color,{blink=0,look=0,glow=true,eyes='#fff'}={}){
+  const eh=Math.max(1.5,11*(1-blink));
+  return `<svg viewBox="-10 -10 120 120" width="100%" height="100%" style="overflow:visible">
+  ${glow?`<ellipse cx="50" cy="104" rx="34" ry="7" fill="rgba(0,0,0,.10)"/>`:''}
+  <g fill="${color}" stroke="${color}">${shapePath(kind)}</g>
+  <rect x="${38+look}" y="${50-eh/2}" width="7" height="${eh}" rx="3" fill="${eyes}"/>
+  <rect x="${55+look}" y="${50-eh/2}" width="7" height="${eh}" rx="3" fill="${eyes}"/></svg>`;
+}
+const blinkAt=(t,list)=>{for(const b of list){const d=t-b;if(d>=0&&d<.22)return Math.sin(d/.22*Math.PI)}return 0};
+const GMAIL=`<svg width="26" height="20" viewBox="0 0 48 36"><path fill="#4285f4" d="M3 36h8V17L0 9v24c0 1.7 1.3 3 3 3z"/><path fill="#34a853" d="M37 36h8c1.7 0 3-1.3 3-3V9l-11 8z"/><path fill="#fbbc04" d="M37 3v14l11-8V5c0-3.7-4.2-5.8-7.2-3.6z"/><path fill="#ea4335" d="M11 17V3l13 9.8L37 3v14L24 26.8z"/><path fill="#c5221f" d="M0 5v4l11 8V3L7.2 1.4C4.2-.8 0 1.3 0 5z"/></svg>`;
+
+/* ---------- static builds ---------- */
+$('gm1').innerHTML=GMAIL;$('gm2').innerHTML=GMAIL;
+const COLORS=['#F2A900','#FFC72C','#FF5A0A','#EE4592','#222','#C8281E','#7B61FF','#0A84FF','#9B3FBF','#8BC53F','#11A89A','#007F73'];
+$('s2colors').innerHTML=COLORS.map((c,i)=>`<div id="cd${i}" style="width:40px;height:40px;border-radius:50%;background:${c};outline-offset:4px"></div>`).join('');
+const SHAPES=['square','flower','badge','star','blob','clover','sparkle','tri'];
+$('s2shapes').innerHTML=SHAPES.map((s,i)=>`<div id="sh${i}" style="width:62px;height:62px;border-radius:16px;background:#f4f4f3;display:flex;align-items:center;justify-content:center;border:2px solid transparent"><div style="width:36px;height:36px">${sprite(s,'#5a5a56',{glow:false,eyes:'transparent'})}</div></div>`).join('');
+
+const BRAIN=[
+ {ic:'🏢',t:'Bedrijf',rows:['Kantoorpunt BV · Gent','Kantoormeubilair B2B','BTW BE 0812.345.678']},
+ {ic:'💶',t:'Prijslijst',rows:['Ergo Pro bureaustoel · € 289','Zit-sta bureau Flex · € 549','Monitorarm Duo · € 119']},
+ {ic:'🏷️',t:'Kortingen',rows:['Volumekorting 8% vanaf 10 stuks','Nieuwe klant: gratis montage','Max. korting zonder akkoord: 10%']},
+ {ic:'🚚',t:'Levering',rows:['Gratis vanaf € 2.500','Levertijd 5 werkdagen','Regio Vlaanderen & Brussel']},
+ {ic:'✍️',t:'Schrijfstijl',rows:['Vriendelijk, je-vorm','Kort en duidelijk','Afsluiten met “Team Kantoorpunt”']},
+ {ic:'🔌',t:'Koppelingen',rows:['Gmail · info@kantoorpunt.be','Billit · offertes & facturen','Excel · sales-rapporten']},
+];
+$('s2grid').innerHTML=BRAIN.map((b,i)=>`<div class="card abs" id="bc${i}" style="left:${(i%3)*356}px;top:${Math.floor(i/3)*280}px;width:332px;height:256px;padding:22px 24px;box-shadow:0 30px 60px -25px rgba(40,25,10,.25)">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><div style="width:48px;height:48px;border-radius:14px;background:var(--orSoft);display:flex;align-items:center;justify-content:center;font-size:24px">${b.ic}</div><div style="font-family:'Inter Tight';font-weight:600;font-size:25px;letter-spacing:-.015em">${b.t}</div>
+  <div id="bk${i}" style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800">✓</div></div>
+  ${b.rows.map((r,j)=>`<div id="br${i}_${j}" style="font-size:17px;color:#444;padding:8px 0;border-top:1px solid #f0f0ee">${r}</div>`).join('')}</div>`).join('');
+
+/* inbox list */
+const MAILS=[['Studio Vlieg — Sarah Peeters','Offerteaanvraag: 12 bureaustoelen…','14:02',1],['Bpost Business','Je zending is onderweg','13:40'],['Lotte Maes','Bezoek bij klant Arcadis bevestigd','12:15'],['Billit','Factuur F-2026-0388 is betaald','11:02'],['Jens Claes','Vraag over levertermijn Flex','10:47'],['Unizo','Uitnodiging: netwerkavond Gent','09:30'],['Amira El Idrissi','Demo-afspraak Woonzorg Ter Leie','09:12']];
+$('s3list').innerHTML=MAILS.map((m,i)=>`<div id="ml${i}" style="position:absolute;left:0;right:0;top:${i*92}px;height:92px;padding:16px 20px;border-bottom:1px solid var(--line);${m[3]?'background:#FFF6F0':''}">
+ <div style="display:flex;justify-content:space-between;font-weight:${m[3]?800:600};font-size:16px"><span style="display:flex;align-items:center;gap:8px">${m[3]?'<span style="width:9px;height:9px;border-radius:50%;background:var(--or)"></span>':''}${m[0]}</span><span style="color:#999;font-weight:500;font-size:14px">${m[2]}</span></div>
+ <div style="font-size:15px;color:#777;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m[1]}</div></div>`).join('');
+const MAILBODY=`Hallo Kantoorpunt,
+
+We verhuizen eind november naar een nieuw kantoor in Gent en zoeken 12 ergonomische bureaustoelen en 6 zit-sta bureaus.
+
+Kunnen jullie ons een offerte bezorgen, inclusief levering?
+
+Alvast bedankt!
+Sarah Peeters — Office manager, Studio Vlieg`;
+
+/* S4 cards */
+$('s4cards').innerHTML=`
+<div class="card abs" id="k1" style="left:0;top:20px;width:560px;padding:26px 28px;box-shadow:0 40px 80px -30px rgba(40,25,10,.3)">
+ <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="width:40px;height:40px">${sprite('flower','#FF5A0A',{glow:false})}</div><div style="font-weight:700;font-size:20px">Uit het businessbrein</div></div>
+ ${[['Ergo Pro bureaustoel','€ 289 / stuk'],['Zit-sta bureau Flex','€ 549 / stuk'],['Volumekorting (18 stuks)','8%'],['Levering (> € 2.500)','Gratis']].map((r,i)=>`<div id="kr${i}" style="display:flex;justify-content:space-between;font-size:19px;padding:12px 14px;border-radius:12px;margin-top:4px"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}
+</div>
+<div class="card abs" id="k2" style="left:40px;top:380px;width:540px;padding:26px 28px;box-shadow:0 40px 80px -30px rgba(40,25,10,.3)">
+ <div style="font-weight:700;font-size:20px;margin-bottom:12px">Berekening</div>
+ ${['12 × Ergo Pro','6 × Zit-sta Flex','Volumekorting 8%','Totaal excl. btw'].map((r,i)=>`<div id="kc${i}" style="display:flex;justify-content:space-between;font-size:19px;padding:9px 0;${i==3?'border-top:1.5px solid #eee;margin-top:6px;padding-top:14px;font-weight:800;font-size:23px':''}"><span>${r}</span><span class="tnum" id="kv${i}"></span></div>`).join('')}
+</div>`;
+
+/* S5 rows */
+const ROWS=[['Ergo Pro bureaustoel','12','€ 289,00','8%',3190.56],['Zit-sta bureau Flex 160×80','6','€ 549,00','8%',3030.48],['Levering & montage','1','€ 0,00','–',0]];
+$('s5rows').innerHTML=ROWS.map((r,i)=>`<div id="rw${i}" style="display:grid;grid-template-columns:2.6fr .8fr 1.2fr .9fr 1.3fr;font-size:18px;padding:16px 6px;border-bottom:1px solid #f0f0ee;align-items:center"><div style="font-weight:600" id="rd${i}"></div><div>${r[1]}</div><div>${r[2]}</div><div>${r[3]}</div><div style="text-align:right;font-weight:700" class="tnum">${r[4]?eur(r[4]):'Gratis'}</div></div>`).join('');
+const TOT=[['Subtotaal',6762],['Volumekorting 8%',-540.96],['Totaal excl. btw',6221.04],['Btw 21%',1306.42],['Totaal incl. btw',7527.46]];
+$('s5tot').innerHTML=TOT.map((r,i)=>`<div id="tt${i}" style="display:flex;justify-content:space-between;padding:7px 0;${i==4?'border-top:2px solid #111;margin-top:8px;padding-top:12px;font-weight:800;font-size:24px':''}"><span style="color:${i==4?'#111':'#666'}">${r[0]}</span><span class="tnum" id="tv${i}"></span></div>`).join('');
+
+const REPLY=`Dag Sarah,
+
+Bedankt voor je aanvraag! In bijlage vind je onze offerte voor 12 Ergo Pro bureaustoelen en 6 zit-sta bureaus Flex.
+
+Omdat je 18 stuks bestelt, krijg je 8% volumekorting en is de levering gratis. Totaal: € 7.527,46 incl. btw. We leveren binnen 5 werkdagen, ruim op tijd voor jullie verhuis.
+
+Groetjes,
+Team Kantoorpunt`;
+
+/* S7 */
+const STEPS=['Verkoopcijfers van vandaag ophalen uit Billit','Commissie per verkoper berekenen (5%)','Resultaten bijwerken in Excel','Mail met resultaten klaarzetten per verkoper'];
+$('s7steps').innerHTML=STEPS.map((s,i)=>`<div id="st${i}" style="display:flex;align-items:center;gap:16px;padding:16px 4px;border-top:1px solid #f0f0ee;font-size:21px"><div style="width:34px;height:34px;border-radius:50%;background:#f1f1ef;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#777" id="sn${i}">${i+1}</div>${s}</div>`).join('');
+const SALES=[['Lotte Maes',3,4820],['Jens Claes',2,3150],['Amira El Idrissi',4,6410],['Tom Wouters',1,2275]];
+const COLS='50px 2.1fr .9fr 1.5fr 1.5fr';
+$('s7tbl').innerHTML=`<div style="display:grid;grid-template-columns:${COLS};background:#f3f3f3;color:#888;font-size:14px;font-weight:600;border-bottom:1px solid #e3e3e3"><div></div><div style="padding:8px 14px">A</div><div style="padding:8px 14px">B</div><div style="padding:8px 14px">C</div><div style="padding:8px 14px">D</div></div>`+
+ [['Verkoper','Deals','Omzet','Commissie 5%'],...SALES.map(s=>[s[0],s[1],s[2],s[2]*.05]),['Totaal',10,16655,832.75]].map((r,i)=>`<div id="xr${i}" style="display:grid;grid-template-columns:${COLS};border-bottom:1px solid #ececec;${i==0?'font-weight:700;background:#E8F3EC':''}${i==5?'font-weight:800;background:#fafafa':''}"><div style="padding:14px 0;text-align:center;color:#999;font-size:14px;background:#f7f7f7;border-right:1px solid #e3e3e3">${i+1}</div>${r.map((c,j)=>`<div class="tnum" id="xc${i}_${j}" style="padding:14px 14px;border-right:1px solid #f0f0f0;${j>=2&&i>0?'text-align:right':''}" data-v="${c}"></div>`).join('')}</div>`).join('');
+$('s7mails').innerHTML=SALES.map((s,i)=>`<div class="card abs" id="sm${i}" style="left:0;top:${i*165}px;width:430px;padding:20px 24px;box-shadow:0 30px 60px -25px rgba(40,25,10,.3)">
+ <div style="display:flex;align-items:center;gap:12px"><div style="width:38px;height:38px">${sprite('flower','#FF5A0A',{glow:false})}</div><div style="flex:1;font-size:15px;color:#888">Concept · aan <b style="color:#222">${s[0].split(' ')[0].toLowerCase()}@kantoorpunt.be</b></div><span class="pill" style="background:#EAF6EE;color:var(--green);font-size:13px">Klaar</span></div>
+ <div style="font-weight:700;font-size:19px;margin-top:10px">Jouw resultaten van vandaag, ${s[0].split(' ')[0]} 🎯</div>
+ <div style="font-size:17px;color:#555;margin-top:4px">${s[1]} deal${s[1]>1?'s':''} · ${eur(s[2])} omzet · <b style="color:var(--or)">${eur(s[2]*.05)} commissie</b></div></div>`).join('');
+
+/* S1 ring apps */
+const APPS=[['Gmail',GMAIL],['Billit','<span style="width:26px;height:26px;border-radius:7px;background:#13294B;color:#fff;font-weight:800;font-size:15px;display:inline-flex;align-items:center;justify-content:center">B</span>'],['Excel','<span style="width:26px;height:26px;border-radius:6px;background:#107C41;color:#fff;font-weight:900;font-size:15px;display:inline-flex;align-items:center;justify-content:center">X</span>'],['Google Calendar','<span style="width:26px;height:26px;border-radius:6px;background:#1a73e8;color:#fff;font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center">31</span>'],['Routines','<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'],['Google Drive','<svg width="26" height="23" viewBox="0 0 87 78"><path fill="#0066da" d="M6.6 66.85 10.45 73.5c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5z"/><path fill="#00ac47" d="M43.65 25 29.9 1.2c-1.35.8-2.5 1.9-3.3 3.3L1.2 48.5A9 9 0 0 0 0 53h27.5z"/><path fill="#ea4335" d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 11.5z"/><path fill="#00832d" d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z"/><path fill="#2684fc" d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z"/><path fill="#ffba00" d="M73.4 26.5 60.7 4.5c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25 59.8 53h27.45c0-1.55-.4-3.1-1.2-4.5z"/></svg>'],['Memory','<span style="font-size:22px">🧠</span>'],['Robaws','<span style="font-size:20px;color:#2a3dbf;font-weight:900">ó</span>']];
+$('s1ring').innerHTML=APPS.map((a,i)=>`<div class="abs chip" id="ap${i}" style="font-size:20px;color:#222;padding:12px 22px 12px 16px;box-shadow:0 20px 40px -20px rgba(0,0,0,.25)">${a[1]}${a[0]}</div>`).join('');
+$('s8row').innerHTML=[['✉️','Antwoorden klaar'],['📄','Offertes in seconden'],['🔁','Routines op autopiloot']].map((r,i)=>`<div class="chip" id="o${i}" style="font-size:22px;color:#222;padding:14px 26px 14px 18px">${r[0]} ${r[1]}</div>`).join('');
+
+/* ---------- captions ---------- */
+let CAPS=[];
+window.setCaps=c=>{CAPS=c};
+
+/* ---------- copy helper ---------- */
+function copyIn(el,t,a,b){
+  const kids=el.children; const out=b?P(t,b-.45,b):0;
+  for(let i=0;i<kids.length;i++){
+    const x=eo(P(t,a+i*.12,a+i*.12+.7));
+    kids[i].style.opacity=x*(1-out);
+    kids[i].style.transform=`translateY(${(1-x)*40-out*20}px)`;
+  }
+}
+function setT(el,s){el.style.transform=s}
+function cursorAt(el,x,y,o){el.style.left=x+'px';el.style.top=y+'px';el.style.opacity=o}
+function rip(el,t,tc,x,y){const d=P(t,tc,tc+.45);el.style.left=x+'px';el.style.top=y+'px';el.style.opacity=d>0&&d<1?(1-d):0;el.style.transform=`scale(${.4+d*1.1})`}
+
+/* ---------- master render ---------- */
+const SC={s1:[0,6.6],s2:[6.3,21.3],s3:[21,29.8],s4:[29.5,38.3],s5:[38,47.3],s6:[47,55.3],s7:[55,72.4],s8:[72,82]};
+window.render=function(t){
+  // background glows drift
+  $('g1').style.transform=`translate(${1150+Math.sin(t*.21)*160}px,${-80+Math.cos(t*.17)*120}px)`;
+  $('g2').style.transform=`translate(${-120+Math.cos(t*.19)*140}px,${520+Math.sin(t*.23)*120}px)`;
+  for(const k in SC){
+    const [a,b]=SC[k]; const el=$(k);
+    const o=vis(t,a,b,.55);
+    el.style.opacity=o;
+    el.style.display=o<=0?'none':'block';
+    const zin=1-eo(P(t,a,a+.8)), zout=eio(P(t,b-.6,b));
+    el.style.transform=`scale(${1+zin*.04-zout*.03})`;
+    el.style.filter=(zin+zout)>.02?`blur(${(zin+zout)*8}px)`:'none';
+    if(o>0) R[k](t,a,b);
+  }
+  // captions
+  const cap=$('cap'); let cur=null;
+  for(const c of CAPS){ if(t>=c[0]&&t<c[1]){cur=c;break} }
+  if(cur){ cap.textContent=cur[2]; cap.style.opacity=Math.min(P(t,cur[0],cur[0]+.15),1-P(t,cur[1]-.15,cur[1])); }
+  else cap.style.opacity=0;
+};
+
+const R={};
+/* S1 */
+R.s1=(t)=>{
+  const x=back(P(t,.3,1.3));
+  const sp=$('s1sprite');
+  sp.innerHTML=sprite('flower','#FF5A0A',{blink:blinkAt(t,[2.6,4.9]),look:Math.sin(t*1.3)*3});
+  sp.style.transform=`translateY(${(1-x)*80 + Math.sin(t*2)*6}px) scale(${.2+.8*x}) rotate(${(1-x)*-30}deg)`;
+  sp.style.opacity=cl(x*1.5);
+  const h=eo(P(t,1.2,2.0)), p=eo(P(t,1.5,2.3));
+  $('s1h').style.opacity=h; $('s1h').style.transform=`translateY(${(1-h)*40}px)`;
+  $('s1p').style.opacity=p; $('s1p').style.transform=`translateY(${(1-p)*30}px)`;
+  const n=APPS.length;
+  for(let i=0;i<n;i++){
+    const ang=i/n*Math.PI*2 + t*.35;
+    const rx=720, rz=260;
+    const X=Math.cos(ang)*rx, Z=Math.sin(ang)*rz, Y=Math.sin(ang*1)*-40 - 120 + Math.sin(t+i)*10;
+    const a=eo(P(t,1.6+i*.08,2.4+i*.08));
+    const e=$('ap'+i);
+    const s=.8+ (Z+rz)/(2*rz)*.35;
+    e.style.transform=`translate(-50%,-50%) translate(${X*a}px,${Y}px) scale(${s*a})`;
+    e.style.zIndex=Math.round(Z+300);
+    e.style.opacity=a*(.45+.55*(Z+rz)/(2*rz));
+    e.style.filter=Z<-120?`blur(${(-Z-120)/60}px)`:'none';
+  }
+};
+/* S2 */
+R.s2=(t,a,b)=>{
+  copyIn($('s2a'),t,a+.3,12.0); copyIn($('s2b'),t,12.1,null);
+  const ph=$('s2phone');
+  const enter=eo(P(t,a,a+1.1)), leave=eio(P(t,11.4,12.4));
+  ph.style.opacity=1-leave;
+  ph.style.transform=`translateY(${(1-enter)*120}px) rotateY(${-18+enter*6+leave*40}deg) rotateX(${6-enter*2}deg) translateX(${leave*300}px) translateZ(${-leave*400}px)`;
+  // color and shape selection
+  const colSel = t>8.25?2:10; const shpSel=t>9.25?1:6;
+  for(let i=0;i<12;i++){const d=$('cd'+i);d.style.outline=i===colSel?'2.5px solid #111':'none';d.style.transform=i===colSel?`scale(${1+.25*Math.max(0,1-Math.abs(t-(colSel==2?8.3:0))*4)})`:'scale(1)'}
+  for(let i=0;i<8;i++){$('sh'+i).style.border=i===shpSel?'2px solid #111':'2px solid transparent';$('sh'+i).style.background=i===shpSel?'#fff':'#f4f4f3'}
+  const col=COLORS[colSel];
+  const pop=1+.15*Math.max(0,1-Math.abs(t-9.3)*3)+.1*Math.max(0,1-Math.abs(t-8.3)*3);
+  $('s2prev').innerHTML=`<div style="width:110px;height:110px;transform:scale(${pop}) translateY(${Math.sin(t*2.2)*3}px)">${sprite(SHAPES[shpSel],col,{blink:blinkAt(t,[10.2]),look:Math.sin(t*1.5)*2})}</div>`;
+  const nm='Kantoorpunt'; const n=Math.floor(P(t,9.8,10.9)*nm.length);
+  $('s2name').textContent=nm.slice(0,n); $('s2name').style.color=n?'#111':'#aaa'; if(!n)$('s2name').textContent='Nieuwe sprite';
+  $('s2caret').style.opacity=(t>9.6&&t<11.2&&Math.floor(t*3)%2==0)?1:0;
+  const press=Math.max(0,1-Math.abs(t-11.15)*5);
+  $('s2btn').style.transform=`scale(${1-press*.05})`; $('s2btn').style.background=press>0.1?'var(--or)':'#151515';
+  // cursor path inside phone coords
+  let cx=330,cy=780,co=P(t,7.4,7.7)*(1-P(t,11.4,11.6));
+  const pts=[[7.6,330,780],[8.25,125,417],[8.9,125,417],[9.25,148,565],[9.7,148,565],[10.0,240,722],[10.8,240,722],[11.15,205,836]];
+  for(let i=0;i<pts.length-1;i++){if(t>=pts[i][0]&&t<pts[i+1][0]){const k=eio(P(t,pts[i][0],pts[i+1][0]));cx=L(pts[i][1],pts[i+1][1],k);cy=L(pts[i][2],pts[i+1][2],k)}}
+  if(t>=pts[pts.length-1][0]){cx=205;cy=836}
+  cursorAt($('s2cur'),cx,cy,co);
+  const rp=$('s2rip'); rip(rp,t,t<9?8.25:t<10?9.25:11.15,t<9?125+12:t<10?148+12:205+12,t<9?417+12:t<10?565+12:836+12);
+  // brain
+  const br=$('s2brain'); const bo=eo(P(t,11.9,12.7)); br.style.opacity=bo;
+  const sw=Math.sin(t*.4)*3;
+  br.style.transform=`translateZ(${(1-bo)*-300}px) rotateY(${-10+sw}deg) rotateX(${8}deg)`;
+  $('s2bsprite').innerHTML=sprite('flower','#FF5A0A',{blink:blinkAt(t,[14.5,18.3]),look:Math.sin(t*1.7)*3});
+  const prog=P(t,12.8,19.6); $('s2bar').style.width=(prog*100)+'%'; $('s2pct').textContent=Math.round(prog*100)+'%';
+  for(let i=0;i<6;i++){
+    const s=12.9+i*1.05; const x=eo(P(t,s,s+.75)); const c=$('bc'+i);
+    c.style.opacity=x;
+    c.style.transform=`translateZ(${(1-x)*260 + Math.sin(t*1.1+i)*8}px) translateY(${(1-x)*60}px) rotateX(${(1-x)*-35}deg)`;
+    for(let j=0;j<3;j++){const r=$(`br${i}_${j}`);const y=eo(P(t,s+.35+j*.18,s+.7+j*.18));r.style.opacity=y;r.style.transform=`translateX(${(1-y)*20}px)`}
+    const k=back(P(t,s+.95,s+1.3)); $('bk'+i).style.transform=`scale(${k})`;
+  }
+};
+/* S3 */
+R.s3=(t,a)=>{
+  copyIn($('s3c'),t,a+.3,null);
+  const w=$('s3win'); const en=eo(P(t,a,a+1.2)); const cam=eio(P(t,a,29.8));
+  w.style.transform=`translateX(${(1-en)*200}px) rotateY(${-16+cam*10}deg) rotateX(${5-cam*3}deg) translateZ(${-120+cam*80}px)`;
+  // new mail slides in at 22.4
+  const nm=eo(P(t,22.4,23.0));
+  for(let i=0;i<MAILS.length;i++){const e=$('ml'+i); if(i==0){e.style.transform=`translateY(${(1-nm)*-92}px)`;e.style.opacity=nm}else e.style.transform=`translateY(${(nm-1)*92}px)`}
+  $('s3cnt').textContent=t>22.6?'12':'11';
+  const to=$('s3toast'); const tx=eo(P(t,22.2,22.8))*(1-eo(P(t,25.0,25.5)));
+  to.style.opacity=tx; to.style.transform=`translateY(${(1-tx)*-40}px) translateZ(140px)`;
+  to.style.boxShadow='0 30px 60px -20px rgba(0,0,0,.3)';
+  const mo=eo(P(t,23.4,24.0)); $('s3mail').style.opacity=mo; $('s3mail').style.transform=`translateY(${(1-mo)*20}px)`;
+  // body reveal by characters
+  const n=Math.floor(P(t,23.8,26.6)*MAILBODY.length); $('s3body').textContent=MAILBODY.slice(0,n);
+  $('ml0').style.boxShadow=t>23.4?'inset 4px 0 0 #FF5A0A':'none';
+  const ch=$('s3chip'); const cx=back(P(t,27.0,27.6));
+  ch.style.opacity=cl(cx); ch.style.transform=`scale(${cx}) translateY(${Math.sin(t*2)*4}px)`;
+  ch.style.boxShadow='0 25px 50px -20px rgba(255,90,10,.45)';
+  $('s3cs').innerHTML=sprite('flower','#FF5A0A',{glow:false,look:Math.sin(t*3)*2});
+};
+/* S4 */
+let feedHTML='';
+R.s4=(t,a)=>{
+  copyIn($('s4c'),t,a+.3,null);
+  const ph=$('s4phone'); const en=eo(P(t,a,a+1.1));
+  ph.style.transform=`translateY(${(1-en)*140}px) rotateY(${14 - P(t,a,38.3)*6}deg) rotateX(4deg)`;
+  $('s4av').innerHTML=sprite('flower','#FF5A0A',{glow:false,blink:blinkAt(t,[33.2]),look:Math.sin(t*1.6)*3});
+  // feed
+  const items=[];
+  const sh=(x)=>`opacity:${eo(x)};transform:translateY(${(1-eo(x))*16}px)`;
+  items.push(`<div style="${sh(P(t,30.0,30.5))};background:#f4f4f2;border-radius:18px;padding:14px 16px;font-size:15px;line-height:1.4"><div style="display:flex;gap:8px;align-items:center;font-weight:700;margin-bottom:4px">${GMAIL} Nieuwe mail</div>Sarah Peeters · Offerteaanvraag: 12 bureaustoelen + 6 zit-sta bureaus</div>`);
+  items.push(`<div style="${sh(P(t,30.7,31.1))};margin-top:14px" class="chip">${GMAIL} Gmail gebruikt</div>`);
+  items.push(`<div style="${sh(P(t,31.3,31.7))};margin-top:10px" class="chip"><span style="font-size:18px">🧠</span> Businessbrein geraadpleegd</div>`);
+  if(t<35.4){
+    const dots='.'.repeat(1+Math.floor(t*3)%3);
+    items.push(`<div style="${sh(P(t,32.0,32.4))};margin-top:16px;display:flex;align-items:center;gap:10px;color:#999;font-size:17px"><div style="width:34px;height:34px">${sprite('flower','#FF5A0A',{glow:false})}</div>Bezig met rekenen${dots}</div>`);
+  } else {
+    items.push(`<div style="${sh(P(t,35.4,35.9))};margin-top:16px;background:#f4f4f2;border-radius:20px;padding:16px 18px;font-size:16px;line-height:1.5">Offerte voor <b>Studio Vlieg</b> berekend: 18 stuks, dus <b>8% volumekorting</b> en gratis levering. Totaal <b>€ 6.221,04</b> excl. btw.<br>Ik zet hem klaar in Billit. ✅</div>`);
+  }
+  $('s4feed').innerHTML=items.join('');
+  // cards
+  const k1=$('k1'),k2=$('k2');
+  const a1=eo(P(t,31.2,31.9)); k1.style.opacity=a1; k1.style.transform=`translateZ(${(1-a1)*300+60}px) rotateY(${-12+Math.sin(t*.8)*2}deg) translateX(${(1-a1)*80}px)`;
+  for(let i=0;i<4;i++){const h=P(t,31.8+i*.45,32.1+i*.45);const o=1-P(t,32.4+i*.45,32.8+i*.45);const e=$('kr'+i);e.style.background=`rgba(255,90,10,${.14*h*o+.05*h})`;e.style.opacity=.35+.65*h}
+  const a2=eo(P(t,33.6,34.3)); k2.style.opacity=a2; k2.style.transform=`translateZ(${(1-a2)*300+20}px) rotateY(${-12+Math.sin(t*.8+1)*2}deg) translateY(${(1-a2)*60}px)`;
+  const vals=[3468,3294,-540.96,6221.04];
+  for(let i=0;i<4;i++){const c=eo(P(t,34.0+i*.4,34.6+i*.4));$('kv'+i).textContent=c>0?(vals[i]<0?'− ':'')+eur(Math.abs(vals[i])*c):'';$('kc'+i).style.opacity=.3+.7*cl(c*3)}
+  $('kv3').style.color='var(--or)';
+  const sp=$('s4speed'); sp.style.opacity=eo(P(t,31,31.5));
+};
+/* S5 */
+R.s5=(t,a)=>{
+  copyIn($('s5c'),t,a+.3,null);
+  const w=$('s5win'); const en=eo(P(t,a,a+1.2)); const cam=eio(P(t,a,47.3));
+  w.style.transform=`translateY(${(1-en)*120}px) rotateY(${-14+cam*8}deg) rotateX(${6-cam*3}deg) translateZ(${-100+cam*60}px)`;
+  const kl='Studio Vlieg BV · Gent'; $('s5klant').textContent=kl.slice(0,Math.floor(P(t,39.0,39.8)*kl.length));
+  for(let i=0;i<3;i++){const s=39.8+i*.9;const x=eo(P(t,s,s+.4));const r=$('rw'+i);r.style.opacity=x;r.style.transform=`translateX(${(1-x)*30}px)`;r.style.background=(t>s&&t<s+1.0)?'#FFF6F0':'transparent';
+    $('rd'+i).textContent=ROWS[i][0].slice(0,Math.floor(P(t,s,s+.55)*ROWS[i][0].length))}
+  for(let i=0;i<5;i++){const c=eo(P(t,42.6+i*.32,43.3+i*.32));const v=TOT[i][1];$('tv'+i).textContent=c>0?(v<0?'− ':'')+eur(Math.abs(v)*c):'';$('tt'+i).style.opacity=cl(c*2)}
+  $('tv4').style.color='var(--or)';
+  $('s5bys').innerHTML=sprite('flower','#FF5A0A',{glow:false});
+  const by=back(P(t,39.2,39.7)); $('s5by').style.transform=`scale(${by})`;
+  const ch=$('s5chip'); const cx=back(P(t,39.0,39.5)); ch.style.opacity=cl(cx); ch.style.transform=`scale(${cx}) translateY(${Math.sin(t*2)*4}px)`;ch.style.boxShadow='0 25px 50px -20px rgba(19,41,75,.4)';
+  const to=$('s5toast'); const tx=back(P(t,44.6,45.1)); to.style.opacity=cl(tx); to.style.transform=`scale(${tx}) translateY(${(1-cl(tx))*-30}px)`;to.style.boxShadow='0 30px 60px -20px rgba(0,0,0,.3)';
+};
+/* S6 */
+R.s6=(t,a)=>{
+  copyIn($('s6c'),t,a+.3,null);
+  const w=$('s6win'); const en=eo(P(t,a,a+1.1)); const cam=eio(P(t,a,55.3));
+  w.style.transform=`translateY(${(1-en)*120}px) rotateY(${-12+cam*9}deg) rotateX(${7-cam*4}deg)`;
+  $('s6bs').innerHTML=sprite('flower','#FF5A0A',{glow:false});
+  const n=Math.floor(P(t,48.0,52.4)*REPLY.length); $('s6body').textContent=REPLY.slice(0,n);
+  const at=back(P(t,48.4,48.9)); $('s6att').style.transform=`scale(${at})`; $('s6att').style.opacity=cl(at);
+  // send click at 53.9
+  const sent=t>53.95;
+  const pulse=t>52.4&&!sent?1+.04*Math.sin(t*9):1;
+  const s=$('s6send'); s.style.transform=`scale(${pulse*(1-Math.max(0,1-Math.abs(t-53.9)*6)*.07)})`;
+  s.style.background=sent?'var(--green)':'var(--or)'; s.innerHTML=sent?'✓ Verzonden':'➤ Verzenden';
+  s.style.boxShadow=sent?'0 10px 24px -8px rgba(31,157,85,.6)':'0 10px 24px -8px rgba(255,90,10,.6)';
+  $('s6wait').textContent=sent?'Verzonden om 14:03':'Wacht op jouw akkoord';
+  // cursor (page coords): button approx at window left 790 + 1010-36-? => compute from element
+  const r=s.getBoundingClientRect();
+  const bx=r.left+r.width*.45, by=r.top+r.height*.5;
+  const k=eio(P(t,52.8,53.8)); const cx=L(1650,bx,k), cy=L(1060,by,k);
+  cursorAt($('s6cur'),cx,cy,P(t,52.6,52.9)*(1-P(t,54.8,55.1)));
+  rip($('s6rip'),t,53.9,bx+10,by+10);
+  const sv=back(P(t,54.1,54.6)); $('s6saved').style.opacity=cl(sv); $('s6saved').style.transform=`scale(${sv})`;$('s6saved').style.boxShadow='0 30px 60px -20px rgba(0,0,0,.35)';
+};
+/* S7 */
+R.s7=(t,a)=>{
+  copyIn($('s7c'),t,a+.3,null);
+  // routine card 55-59.6
+  const rc=$('s7rout'); const ri=eo(P(t,a,a+1)), ro=eio(P(t,59.2,59.8));
+  rc.style.opacity=ri*(1-ro); rc.style.transform=`translateY(${(1-ri)*100}px) rotateY(${-12+Math.sin(t*.5)*2}deg) rotateX(6deg) translateZ(${-ro*500}px)`;
+  const tg=eio(P(t,55.9,56.3)); $('s7tog').style.background=tg>.5?'var(--or)':'#ddd'; $('s7knob').style.left=(4+tg*32)+'px';
+  for(let i=0;i<4;i++){const x=eo(P(t,56.3+i*.4,56.8+i*.4));const e=$('st'+i);e.style.opacity=x;e.style.transform=`translateX(${(1-x)*30}px)`}
+  // clock 59.6-61.8
+  const ck=$('s7clock'); const ci=eo(P(t,59.6,60.1)), co=eio(P(t,61.5,62.0));
+  ck.style.opacity=ci*(1-co); ck.style.transform=`scale(${.85+.15*ci+co*.2}) translateZ(0)`;
+  ck.style.display=(ci*(1-co))>0?'block':'none';
+  const flip=P(t,60.5,60.75);
+  $('s7time').textContent=t<60.6?'17:59':'18:00';
+  $('s7time').style.transform=`rotateX(${Math.sin(flip*Math.PI)*70}deg)`;
+  $('s7time').style.color=t>60.6?'var(--or)':'var(--ink)';
+  const rn=back(P(t,60.8,61.2)); $('s7run').style.transform=`scale(${rn})`; $('s7run').style.opacity=cl(rn);
+  // excel 61.8-72.4
+  const xl=$('s7xl'); const xi=eo(P(t,61.7,62.5));
+  xl.style.opacity=xi; xl.style.display=xi>0?'block':'none';
+  xl.style.transform=`translateY(${(1-xi)*120}px) rotateY(${-14+P(t,61.7,72.4)*6}deg) rotateX(6deg) translateZ(-60px)`;
+  for(let i=0;i<6;i++){
+    const s=62.4+i*.55;
+    for(let j=0;j<4;j++){
+      const e=$(`xc${i}_${j}`); const v=e.dataset.v; const c=eo(P(t,s+j*.12,s+j*.12+.4));
+      if(c<=0){e.textContent='';continue}
+      if(i==0||j==0) e.textContent=v;
+      else if(j==1) e.textContent=Math.round(+v*c);
+      else e.textContent=eur(+v*c);
+      e.style.background=(c<1&&c>0)?'#E8F3EC':'transparent';
+    }
+  }
+  $('s7fx').textContent=t<63.5?'fx':(t<65?'fx  =C3*5%':'fx  =SUM(D3:D6)');
+  // mails 66-72
+  for(let i=0;i<4;i++){
+    const s=66.2+i*.55; const x=eo(P(t,s,s+.7)); const e=$('sm'+i);
+    e.style.opacity=x;
+    e.style.transform=`translateX(${(1-x)*-280}px) translateZ(${120+ (1-x)*-200 + Math.sin(t*1.2+i)*8}px) rotateY(${-8+(1-x)*20}deg) scale(${.85+.15*x})`;
+  }
+};
+/* S8 */
+R.s8=(t,a)=>{
+  const x=back(P(t,a+.2,a+1.1));
+  const sp=$('s8sprite'); sp.innerHTML=sprite('flower','#FF5A0A',{blink:blinkAt(t,[75.6,78.8]),look:Math.sin(t*1.4)*3});
+  sp.style.transform=`translateY(${Math.sin(t*2)*6}px) scale(${x}) rotate(${(1-x)*40}deg)`; sp.style.opacity=cl(x*1.5);
+  const h=eo(P(t,a+.7,a+1.4)),p=eo(P(t,a+1.0,a+1.7));
+  $('s8h').style.opacity=h;$('s8h').style.transform=`translateY(${(1-h)*40}px)`;
+  $('s8p').style.opacity=p;$('s8p').style.transform=`translateY(${(1-p)*30}px)`;
+  for(let i=0;i<3;i++){const o=back(P(t,a+1.8+i*.25,a+2.4+i*.25));const e=$('o'+i);e.style.opacity=cl(o);e.style.transform=`scale(${o})`;e.style.boxShadow='0 20px 40px -20px rgba(0,0,0,.2)'}
+};
+window.DURATION=82;
+render(0);
+</script>
+</body>
+</html>
