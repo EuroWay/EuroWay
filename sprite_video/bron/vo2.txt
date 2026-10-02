@@ -1,0 +1,10 @@
+s1|Dit is [[SPRITE]]. Een AI-collega die het repetitieve werk van je overneemt.
+s2|We nemen een voorbeeld: Schilderwerken Kurt. Eerst krijgt [[SPRITE]] een businessbrein. Daarin staan bijvoorbeeld de prijzen per vierkante meter, de kortingen, de voorwaarden, en hoe Kurt zijn mails schrijft.
+s3|Dan komt er een mail binnen. Els vraagt een offerte om haar woonkamer, keuken en hal te laten schilderen.
+s4|[[SPRITE]] leest de mail, zoekt in het brein de juiste prijzen op, ziet dat ze recht heeft op [[VOLUME]] en zes procent btw, en rekent alles meteen uit.
+s5|Daarna zet hij de offerte rechtstreeks klaar in Billit. Met de juiste lijnen, de korting en de btw.
+s6|En het antwoord staat al klaar in de [[MAILBOX]], met de offerte in bijlage. Kurt moet enkel nog op verzenden drukken.
+s7|Daarnaast kan [[SPRITE]] nog veel meer. Bijvoorbeeld: vult iemand een nieuwe klant in, in Billit? Dan neemt [[SPRITE]] die gegevens automatisch over in [[BOUWSOFT]]. Zonder dubbel typwerk.
+s8|Of bijvoorbeeld een vaste taak: elke werkdag om zes uur zet hij de verkoopcijfers in Excel, berekent hij de commissie per verkoper, en zet hij voor iedereen een mail met hun resultaten klaar.
+s9|En zo zijn er nog tal van voorbeelden. Herinneringen voor openstaande facturen, de weekplanning voor de ploegen, of afspraken in je agenda.
+s10|[[SPRITE]]. Minder klikken, meer ondernemen.
