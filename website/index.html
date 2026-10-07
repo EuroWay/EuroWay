@@ -1,0 +1,530 @@
+<title>Sprite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one centered column (1200px) of editorial sections; paintings carry the product shots, orange is used sparingly for action and emphasis. */
+:root{
+  --bg:#ffffff; --bg2:#f6f5f3; --card:#ffffff; --fg:#141414; --fg2:#6f6d6a; --fg3:#a3a09b;
+  --line:#ebe9e5; --accent:#ff5a0a; --accent2:#ff7a2e; --accentSoft:#fff0e7; --live:#1f8a4c; --liveSoft:#e8f5ed;
+  --shadow:0 30px 60px -30px rgba(40,25,10,.25);
+  --display:'Inter Tight',ui-sans-serif,system-ui,sans-serif; --body:'Figtree',ui-sans-serif,system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f0e0d; --bg2:#171614; --card:#1c1b19; --fg:#f4f2ee; --fg2:#a7a39d; --fg3:#6f6b65;
+  --line:#2a2825; --accent:#ff6a1f; --accent2:#ff8a45; --accentSoft:#2b1a10; --live:#4cc483; --liveSoft:#14261b;
+  --shadow:0 30px 60px -30px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f0e0d; --bg2:#171614; --card:#1c1b19; --fg:#f4f2ee; --fg2:#a7a39d; --fg3:#6f6b65;
+  --line:#2a2825; --accent:#ff6a1f; --accent2:#ff8a45; --accentSoft:#2b1a10; --live:#4cc483; --liveSoft:#14261b;
+  --shadow:0 30px 60px -30px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:24px}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.035em;line-height:1.02;margin:0;text-wrap:balance}
+h2{font-size:clamp(36px,5vw,60px)}
+h2 .soft,h1 .soft{color:var(--fg3)}
+p{margin:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:15px;color:var(--fg);background:var(--card)}
+.eyebrow b{color:var(--accent);font-weight:500}
+.eyebrow svg{width:16px;height:16px}
+section{padding-block:110px}
+.sec-head{display:grid;gap:22px;margin-bottom:56px;max-width:780px}
+.sec-head p{color:var(--fg2);font-size:19px;max-width:620px}
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:14px 24px;font-weight:600;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:var(--body);transition:transform .15s ease, box-shadow .15s ease}
+.btn:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 24px -12px rgba(255,90,10,.7)}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--fg)}
+.btn-ghost:hover{background:var(--bg2)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.03em;text-decoration:none}
+.logo .mark{width:30px;height:30px}
+.nav nav{display:flex;gap:26px;font-size:15px;color:var(--fg2)}
+.nav nav a{text-decoration:none}.nav nav a:hover{color:var(--fg)}
+.nav .right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.nav .btn{padding:10px 18px;font-size:15px}
+@media (max-width:900px){.nav nav{display:none}.nav .login{display:none}}
+
+/* hero */
+.hero{padding-block:84px 40px}
+.hero-top{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:end}
+.hero h1{font-size:clamp(56px,9vw,124px);letter-spacing:-.05em}
+.hero-lede{font-size:clamp(19px,2vw,23px);color:var(--fg2);max-width:500px;display:grid;gap:26px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-meta{font-size:14px;color:var(--fg3)}
+@media (max-width:900px){.hero-top{grid-template-columns:1fr;align-items:start}}
+.stage{position:relative;margin-top:56px;border-radius:28px;overflow:hidden;aspect-ratio:16/9.2;max-width:100%;background:#c9b9a0 url(assets/kust.jpg) center/cover}
+.stage img.app{position:absolute;left:9%;right:-2%;top:9%;width:93%;max-width:none;border-radius:16px;box-shadow:0 40px 80px -20px rgba(30,20,10,.45)}
+.stage .float{position:absolute;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.94);color:#141414;border-radius:16px;padding:12px 16px;font-size:14px;font-weight:600;box-shadow:0 20px 40px -18px rgba(0,0,0,.35);animation:bob 6s ease-in-out infinite}
+.stage .float small{display:block;font-weight:500;color:#76726c;font-size:12.5px}
+.stage .f1{left:3%;bottom:10%}.stage .f2{right:3%;top:5%;animation-delay:-3s}
+.stage .float .ic{width:30px;height:30px;flex:none}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (max-width:700px){.stage{aspect-ratio:4/3}.stage img.app{left:5%;top:8%;width:120%}.stage .f2{display:none}}
+
+/* app strip */
+.strip{padding-block:46px;border-block:1px solid var(--line);background:var(--bg2)}
+.strip .wrap{display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+.strip p{font-size:15px;color:var(--fg2);max-width:220px}
+.strip .apps{display:flex;flex-wrap:wrap;gap:10px;flex:1;min-width:0}
+.tag{max-width:100%;display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--card);border:1px solid var(--line);padding:7px 14px 7px 8px;font-size:15px;font-weight:500;white-space:nowrap}
+
+/* mono tile */
+.mono{width:30px;height:30px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;letter-spacing:-.02em;flex:none;font-family:var(--body)}
+
+/* problem */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat{background:var(--bg2);border-radius:22px;padding:28px 26px;display:grid;gap:10px;align-content:start}
+.stat .n{font-family:var(--display);font-size:52px;letter-spacing:-.04em;line-height:1;font-weight:500}
+.stat .n.acc{color:var(--accent)}
+.stat p{color:var(--fg2);font-size:16px}
+.src{margin-top:18px;font-size:13px;color:var(--fg3)}
+@media (max-width:900px){.stats{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.stats{grid-template-columns:1fr}}
+
+/* how */
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.how article{display:grid;gap:12px;align-content:start;min-width:0}
+.how .pic{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;background-size:cover;background-position:center}
+.how .pic img{position:absolute;left:8%;top:30%;width:130%;max-width:none;border-radius:12px;box-shadow:0 20px 40px -18px rgba(0,0,0,.4)}
+.how .pic .sp{position:absolute;left:10%;top:7%;width:22%}
+.how h3{font-size:24px;letter-spacing:-.025em;margin-top:8px}
+.how p{color:var(--fg2);font-size:16px}
+@media (max-width:1000px){.how{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.how{grid-template-columns:1fr}}
+
+/* solutions */
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.sol{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;display:grid;gap:14px;align-content:start;min-width:0}
+.sol .head{display:flex;align-items:center;gap:12px}
+.sol .head .sp{width:40px;height:40px;flex:none}
+.sol h3{font-size:24px;letter-spacing:-.025em}
+.sol p{color:var(--fg2);font-size:16px}
+.sol .ex{background:var(--bg2);border-radius:14px;padding:14px 16px;font-size:15px;color:var(--fg)}
+.sol .ex span{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.sol .tools{display:flex;flex-wrap:wrap;gap:6px}
+.sol .tools .tag{font-size:13px;padding:4px 10px 4px 5px}
+.sol .tools .mono{width:22px;height:22px;border-radius:6px;font-size:9.5px}
+@media (max-width:1000px){.sol-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.sol-grid{grid-template-columns:1fr}}
+
+/* sectors */
+#sectoren{background:var(--bg2)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+.tabs button{font-family:var(--body);font-size:16px;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:10px 18px 10px 12px;display:inline-flex;align-items:center;gap:9px;cursor:pointer}
+.tabs button .sp{width:24px;height:24px}
+.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.panel{display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start}
+.panel .intro{background:var(--card);border-radius:24px;padding:30px;display:grid;gap:18px;position:sticky;top:96px;min-width:0}
+.panel .intro .sp{width:56px;height:56px}
+.panel .intro h3{font-size:34px;letter-spacing:-.035em}
+.panel .intro p{color:var(--fg2);font-size:16px}
+.panel .intro .who{font-size:14px;color:var(--fg2);display:flex;flex-wrap:wrap;gap:6px}
+.panel .intro .who span{background:var(--bg2);border-radius:999px;padding:4px 11px}
+.tasks{display:grid;gap:10px}
+.tasks .lbl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.tasks li{list-style:none;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:15.5px;line-height:1.45}
+.tasks ul{margin:0;padding:0;display:grid;gap:12px}
+.tasks li svg{width:20px;height:20px;margin-top:2px;color:var(--accent)}
+.int-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.int-head h4{margin:0;font-family:var(--display);font-weight:500;font-size:26px;letter-spacing:-.025em}
+.legend{display:flex;gap:14px;font-size:14px;color:var(--fg2);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dotl{width:8px;height:8px;border-radius:50%;background:var(--live)}.dotr{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--fg3)}
+.ints{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;counter-reset:n}
+.int{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;min-width:0}
+.int .nm{font-weight:600;font-size:16px;line-height:1.2;display:flex;align-items:center;gap:6px;min-width:0}
+.int .nm em{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--fg2);border:1px solid var(--line);border-radius:5px;padding:1px 4px}
+.int .ct{font-size:13.5px;color:var(--fg2)}
+.int .st{font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.st.live{background:var(--liveSoft);color:var(--live)}.st.soon{color:var(--fg2);border:1px solid var(--line)}
+.int .rk{font-family:var(--display);color:var(--fg3);font-size:13px;width:22px;text-align:right;font-variant-numeric:tabular-nums}
+.int .left{display:flex;align-items:center;gap:10px}
+.int-foot{margin-top:16px;font-size:14px;color:var(--fg2)}
+@media (max-width:1000px){.panel{grid-template-columns:1fr}.panel .intro{position:static}}
+@media (max-width:640px){.ints{grid-template-columns:1fr}}
+
+/* all integrations search */
+.market{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center}
+.market .img{border-radius:24px;overflow:hidden;background:url(assets/vallei.jpg) center/cover;padding:8% 6%;max-width:100%}
+.market .img img{border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);display:block;width:100%}
+.search{display:grid;gap:14px}
+.search label{font-weight:600;font-size:15px}
+.search input{width:100%;font-family:var(--body);font-size:17px;padding:14px 18px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+.results{display:flex;flex-wrap:wrap;gap:8px;min-height:120px;align-content:flex-start}
+.results .tag{white-space:normal}.sec-head .eyebrow{justify-self:start}
+.results .tag small{color:var(--fg3);font-weight:500;margin-left:2px}
+.count{font-size:14px;color:var(--fg2)}
+@media (max-width:900px){.market{grid-template-columns:1fr}}
+
+/* compare */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:22px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:16px}
+th,td{text-align:left;padding:18px 22px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+th{font-weight:600;color:var(--fg2);font-size:14px}
+th.us,td.us{background:var(--accentSoft)}
+th.us{color:var(--accent)}
+td .y{color:var(--accent);font-weight:700}
+
+/* pricing */
+.prices{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;display:grid;gap:14px;align-content:start;min-width:0}
+.plan.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.plan h3{font-size:24px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.plan h3 span{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:#fff;border-radius:999px;padding:3px 8px}
+.plan .for{font-size:14px;color:var(--fg2)}
+.plan .pr{font-family:var(--display);font-size:42px;letter-spacing:-.04em;line-height:1}
+.plan .pr small{font-family:var(--body);font-size:14px;color:var(--fg2);letter-spacing:0}
+.plan ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:8px}
+.plan li svg{width:16px;height:16px;margin-top:3px;color:var(--accent)}
+.plan .inc{font-size:13px;color:var(--fg3)}
+.plan .btn{justify-content:center;padding:11px 16px;font-size:15px}
+.price-note{margin-top:22px;color:var(--fg2);font-size:15px}
+@media (max-width:1100px){.prices{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.prices{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.prices{grid-template-columns:1fr}}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1.4fr;gap:40px}
+details{border-bottom:1px solid var(--line);padding-block:20px}
+summary{cursor:pointer;font-weight:600;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:'+';color:var(--accent);font-size:24px;line-height:1}
+details[open] summary:after{content:'–'}
+details p{color:var(--fg2);margin-top:10px;max-width:62ch}
+@media (max-width:900px){.faq{grid-template-columns:1fr}}
+
+/* cta */
+.cta{border-radius:32px;background:linear-gradient(135deg,#ff6a1a,#ff3d00);color:#fff;padding:clamp(40px,7vw,90px);display:grid;gap:26px;position:relative;overflow:hidden}
+.cta h2{color:#fff;max-width:760px}
+.cta p{color:rgba(255,255,255,.9);font-size:20px;max-width:560px}
+.cta .btn-primary{background:#fff;color:#ff4d00;box-shadow:none}
+.cta .btn-ghost{color:#fff;border-color:rgba(255,255,255,.5)}
+.cta .crowd{position:absolute;right:-20px;bottom:-30px;width:min(520px,60%);display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;opacity:.95;pointer-events:none}
+.cta .crowd svg{width:64px;height:64px}
+@media (max-width:700px){.cta .crowd{display:none}}
+footer{padding-block:60px 50px;color:var(--fg2);font-size:15px}
+footer .wrap{display:flex;gap:30px;justify-content:space-between;flex-wrap:wrap;align-items:center}
+footer nav{display:flex;gap:22px;flex-wrap:wrap}
+footer a{text-decoration:none}
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" id="logoMark"></span>Sprite</a>
+    <nav aria-label="Hoofdnavigatie">
+      <a href="#hoe">Hoe het werkt</a>
+      <a href="#oplossingen">Oplossingen</a>
+      <a href="#sectoren">Sectoren</a>
+      <a href="#koppelingen">Koppelingen</a>
+      <a href="#prijzen">Prijzen</a>
+    </nav>
+    <div class="right">
+      <a class="btn btn-ghost login" href="#prijzen">Inloggen</a>
+      <a class="btn btn-primary" href="#prijzen">Start gratis</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <h1>Work that<br><span class="soft">does itself.</span></h1>
+        <div class="hero-lede">
+          <p>Sprite leest je mail, werkt in 1.500+ apps en bedient zelf je computer. Toon het één keer, Sprite doet de rest.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#prijzen">Start gratis</a>
+            <a class="btn btn-ghost" href="#sectoren">Bekijk jouw sector</a>
+          </div>
+          <p class="hero-meta">Gemaakt in België · Werkt met Billit, Teamleader, Exact Online, Odoo en meer</p>
+        </div>
+      </div>
+      <div class="stage" role="img" aria-label="De Sprite-app met een offerte die klaarstaat voor Bakkerij Verhaeghe">
+        <img class="app" src="assets/app.png" alt="">
+        <div class="float f1"><span class="ic" data-sprite="flower,#0A84FF"></span><div>Offerte klaar in Billit<small>€2.450 excl. btw · wacht op jouw akkoord</small></div></div>
+        <div class="float f2"><span class="ic" data-sprite="clover,#11A89A"></span><div>Routine uitgevoerd<small>Weekplanning verstuurd · 07:30</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <div class="wrap">
+      <p>Werkt in de software die je al hebt. Belgische tools voorop.</p>
+      <div class="apps" id="strip"></div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section id="probleem">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>Het <b>probleem</b></span>
+        <h2>Elk bedrijf verliest wekelijks uren aan werk <span class="soft">dat niemand graag doet.</span></h2>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">15 uur</div><p>per week verliest een kantoormedewerker aan vijf administratieve kerntaken.</p></div>
+        <div class="stat"><div class="n">96%</div><p>van de Belgische ondernemingen telt minder dan 10 mensen. Geen IT-afdeling, geen tijd.</p></div>
+        <div class="stat"><div class="n">34,5%</div><p>van de Belgische bedrijven gebruikt AI in 2025, tegenover 24,7% een jaar eerder.</p></div>
+        <div class="stat"><div class="n acc">Chat ≠ werk</div><p>AI-chatplatformen zitten niet in de boekhoud- en facturatiesoftware waar het echte werk gebeurt.</p></div>
+      </div>
+      <p class="src">Bronnen: Ricoh Europe, enquête bij 6.000 kantoormedewerkers (nov. 2025) · Statbel (2023) · Eurostat (2025)</p>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="hoe" style="padding-top:20px">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>Hoe het <b>werkt</b></span>
+        <h2>Een digitaal team dat meewerkt <span class="soft">in de software die je al hebt.</span></h2>
+      </div>
+      <div class="how">
+        <article><div class="pic" style="background-image:url(assets/kaart1.jpg)"><span class="sp" data-sprite="clover,#11A89A"></span><img src="assets/kaart1_ui.png" alt="Routines in Sprite: elke werkdag om 07:30 de planning van de dag"></div><h3>Toon het één keer</h3><p>Film een taak of doorloop ze één keer. Daarna doet Sprite ze zelf.</p></article>
+        <article><div class="pic" style="background-image:url(assets/kaart2.jpg)"><span class="sp" data-sprite="square,#FF5A0A" style="left:auto;right:10%"></span><img src="assets/kaart2_ui.png" alt="Aankoopfactuur ingeboekt in Billit"></div><h3>Werkt in jouw software</h3><p>Billit, Teamleader, Exact Online, Odoo en meer. Elke koppeling is herbruikbaar.</p></article>
+        <article><div class="pic" style="background-image:url(assets/kaart3.jpg)"><span class="sp" data-sprite="flower,#0A84FF"></span><img src="assets/kaart3_ui.png" alt="Een doorgestuurde aanvraag die Sprite heeft gelezen"></div><h3>Gokt nooit</h3><p>Sprite heeft een bedrijfsbrein met klanten, prijsafspraken en procedures. Elke actie steunt op een geverifieerde bron.</p></article>
+        <article><div class="pic" style="background-image:url(assets/kaart4.jpg)"><span class="sp" data-sprite="star,#1a1a1a" style="left:auto;right:12%"></span><img src="assets/kaart4_ui.png" alt="Sprite vraagt akkoord om een offerte te versturen"></div><h3>Jij keurt goed</h3><p>Gevoelige stappen, zoals een factuur of mail versturen, vragen eerst jouw akkoord. Tot het vertrouwen er is.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS -->
+  <section id="oplossingen" style="padding-top:30px">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>De <b>oplossingen</b></span>
+        <h2>Zes soorten werk <span class="soft">die Sprite van je overneemt.</span></h2>
+        <p>Van de mail die binnenkomt tot het rapport dat elke avond klaarligt. Je begint met één taak en breidt uit wanneer je wil.</p>
+      </div>
+      <div class="sol-grid" id="solGrid"></div>
+    </div>
+  </section>
+
+  <!-- SECTORS -->
+  <section id="sectoren">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>Per <b>sector</b></span>
+        <h2>Gemaakt voor jouw vak, <span class="soft">met de 20 koppelingen die ertoe doen.</span></h2>
+        <p>Elke sector werkt met eigen software. Per sector zie je wat Sprite er concreet doet en welke twintig koppelingen het meest tellen.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs" aria-label="Sectoren"></div>
+      <div id="panel" role="tabpanel"></div>
+    </div>
+  </section>
+
+  <!-- ALL INTEGRATIONS -->
+  <section id="koppelingen">
+    <div class="wrap market">
+      <div class="img"><img src="assets/marktplaats.jpg" alt="De marktplaats met koppelingen in de Sprite-app"></div>
+      <div style="display:grid;gap:24px;min-width:0">
+        <span class="eyebrow" style="justify-self:start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7H6a4 4 0 0 0 0 8h3M15 7h3a4 4 0 0 1 0 8h-3M8 11h8"/></svg>Alle <b>koppelingen</b></span>
+        <h2>Meer dan 1.500 apps, <span class="soft">met Belgische software voorop.</span></h2>
+        <div class="search">
+          <label for="q">Zoek of jouw software erbij zit</label>
+          <input id="q" type="search" placeholder="Bijvoorbeeld Billit, Whise of Bouwsoft" autocomplete="off">
+          <div class="count" id="count"></div>
+          <div class="results" id="results"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="waarom" style="padding-top:20px">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Waarom <b>Sprite</b></span>
+        <h2>Werkt als een collega, <span class="soft">voor de prijs van een koffie per dag.</span></h2>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th></th><th class="us">Sprite</th><th>Generieke AI</th><th>Digitale werknemers</th></tr></thead>
+          <tbody>
+            <tr><td>Neemt volledige taken over</td><td class="us"><span class="y">Ja</span></td><td>Beperkt</td><td>Ja</td></tr>
+            <tr><td>Verankerd in lokale software</td><td class="us"><span class="y">Ja</span></td><td>Nee</td><td>Enkel bekende tools</td></tr>
+            <tr><td>Gemaakt voor</td><td class="us"><span class="y">Europese kmo's</span></td><td>Iedereen</td><td>Grote bedrijven</td></tr>
+            <tr><td>Startprijs</td><td class="us"><span class="y">Gratis</span></td><td>Per gebruiker</td><td>Op offerte</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Generieke AI: ChatGPT, Claude, Grok · Digitale werknemers: Decagon, Beam AI, Zamp</p>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="prijzen" style="background:var(--bg2)">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Onze <b>prijzen</b></span>
+        <h2>Een abonnement <span class="soft">dat meegroeit met je bedrijf.</span></h2>
+      </div>
+      <div class="prices" id="prices"></div>
+      <p class="price-note">Plus een eenmalig opstartpakket: samen met jou zetten we de eerste koppelingen en taken op. Prijzen excl. btw.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap faq">
+      <div class="sec-head" style="margin:0">
+        <span class="eyebrow" style="justify-self:start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/></svg>Veelgestelde <b>vragen</b></span>
+        <h2>Goed om te weten.</h2>
+      </div>
+      <div>
+        <details open><summary>Moet ik iets installeren?</summary><p>Nee. Sprite werkt op iPhone, Mac en in de browser. Koppelingen leg je met een paar klikken; voor software zonder koppeling gebruikt Sprite een eigen cloudbrowser.</p></details>
+        <details><summary>Stuurt Sprite zomaar mails of facturen uit?</summary><p>Nee. Gevoelige stappen, zoals een mail versturen of een factuur boeken, vragen eerst jouw akkoord. Pas als je dat wil, laat je Sprite bepaalde taken zelfstandig afwerken.</p></details>
+        <details><summary>Wat is het bedrijfsbrein?</summary><p>Een overzicht van je klanten, prijzen, kortingen, voorwaarden en procedures. Sprite baseert elke actie op die gegevens en verzint niets.</p></details>
+        <details><summary>Ziet Sprite mijn wachtwoorden?</summary><p>Nee. Je logins worden versleuteld bewaard. Je Sprites loggen ermee in, maar zien je wachtwoord nooit.</p></details>
+        <details><summary>Mijn software staat niet in de lijst. Wat nu?</summary><p>Vraag de koppeling aan. In het Max-plan bouwen we koppelingen op aanvraag, en via de cloudbrowser kan Sprite vaak al meteen in je software werken.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="cta">
+        <h2>Work that does itself.</h2>
+        <p>Start gratis met je eerste Sprite. Geef hem één taak die je elke week herhaalt en kijk wat er gebeurt.</p>
+        <div class="hero-ctas"><a class="btn btn-primary" href="#prijzen">Start gratis</a><a class="btn btn-ghost" href="#sectoren">Bekijk jouw sector</a></div>
+        <div class="crowd" id="crowd" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" id="logoMark2"></span>Sprite</a>
+    <nav aria-label="Footer"><a href="#oplossingen">Oplossingen</a><a href="#sectoren">Sectoren</a><a href="#koppelingen">Koppelingen</a><a href="#prijzen">Prijzen</a><a href="#faq">FAQ</a></nav>
+    <span>© 2026 Sprite · Gemaakt in België</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- sprite characters ---------- */
+function shape(k){switch(k){
+ case 'flower':{let s='';for(let i=0;i<6;i++){const a=i*Math.PI/3-Math.PI/2;s+=`<circle cx="${(50+24*Math.cos(a)).toFixed(1)}" cy="${(50+24*Math.sin(a)).toFixed(1)}" r="22"/>`}return s+'<circle cx="50" cy="50" r="26"/>'}
+ case 'clover':return '<circle cx="50" cy="28" r="21"/><circle cx="28" cy="50" r="21"/><circle cx="72" cy="50" r="21"/><circle cx="50" cy="72" r="21"/><circle cx="50" cy="50" r="20"/>';
+ case 'square':return '<rect x="8" y="8" width="84" height="84" rx="26"/>';
+ case 'star':{let p=[];for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,r=i%2?22:46;p.push((50+r*Math.cos(a)).toFixed(1)+','+(54+r*Math.sin(a)).toFixed(1))}return `<polygon points="${p.join(' ')}" stroke-linejoin="round" stroke-width="10"/>`}
+ case 'badge':{let p=[];for(let i=0;i<32;i++){const a=i*Math.PI/16,r=i%2?40:46;p.push((50+r*Math.cos(a)).toFixed(1)+','+(50+r*Math.sin(a)).toFixed(1))}return `<polygon points="${p.join(' ')}" stroke-linejoin="round" stroke-width="6"/>`}
+ case 'sparkle':return '<path d="M50 4 Q56 44 96 50 Q56 56 50 96 Q44 56 4 50 Q44 44 50 4Z"/>';
+ case 'blob':return '<path d="M30 18 C55 2 92 20 90 55 C88 88 50 96 26 84 C4 72 6 34 30 18Z"/>';
+ case 'tri':return '<path d="M50 10 C62 10 92 70 86 82 C80 92 20 92 14 82 C8 70 38 10 50 10Z"/>';}}
+function sprite(k,c,eyes='#fff'){return `<svg viewBox="-6 -6 112 112" width="100%" height="100%" aria-hidden="true"><g fill="${c}" stroke="${c}">${shape(k)}</g><rect x="38" y="44" width="7" height="12" rx="3" fill="${eyes}"/><rect x="55" y="44" width="7" height="12" rx="3" fill="${eyes}"/></svg>`}
+document.querySelectorAll('[data-sprite]').forEach(e=>{const [k,c]=e.dataset.sprite.split(',');e.innerHTML=sprite(k,c)});
+['logoMark','logoMark2'].forEach(id=>document.getElementById(id).innerHTML=sprite('flower','#FF5A0A'));
+const check='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* ---------- integrations ---------- */
+// L = beschikbaar vandaag (zoals in de Sprite-marktplaats); BE = Belgische software of overheidsplatform
+const COLORS={'Exact Online':'#E01E26','Billit':'#13294B','Teamleader':'#00B2A9','Robaws':'#2A3DBF','Odoo':'#714B67','Gmail':'#EA4335','Outlook':'#0F6CBD','Excel':'#107C41','Google Calendar':'#1A73E8','Google Drive':'#1FA463','Sendcloud':'#1E8DE6','Instagram':'#D62976','Bouwsoft':'#0E6E78','Shopify':'#5E8E3E','Mollie':'#1A1A1A','Stripe':'#635BFF','PayPal':'#003087','Lightspeed':'#E4002B','bpost':'#EF2637','DHL':'#D40511','PostNL':'#F27D00','Word':'#185ABD','SharePoint':'#036C70','Microsoft Teams':'#5B5FC7','itsme':'#FF4612','Immoweb':'#3B5BDB','WhatsApp Business':'#25D366','Klaviyo':'#232426','Mailchimp':'#E8A317','Bol.com':'#0000A4','Amazon Seller Central':'#FF9900'};
+const PALETTE=['#FF5A0A','#0A84FF','#11A89A','#7B61FF','#E5484D','#2F2F2F','#D97706','#0EA5E9','#9B3FBF','#16A34A'];
+function colorFor(n){if(COLORS[n])return COLORS[n];let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))>>>0;return PALETTE[h%PALETTE.length]}
+function initials(n){const w=n.replace(/[^A-Za-z0-9@ .&-]/g,'').split(/[\s.&-]+/).filter(Boolean);return (w.length>1?w[0][0]+w[1][0]:n.slice(0,2)).toUpperCase()}
+function mono(n){return `<span class="mono" style="background:${colorFor(n)}">${initials(n)}</span>`}
+
+const SECTORS=[
+ {id:'boekhouding',name:'Boekhouding',sp:['square','#FF5A0A'],title:'Accountants en boekhoudkantoren',who:['Zelfstandige boekhouders','Kantoren van 2 tot 10 mensen','Kantoren met meerdere vestigingen','Sociale secretariaten'],
+  intro:'Honderden dossiers, dezelfde handelingen. Sprite zet stukken klaar, volgt aangiftes op en beantwoordt klantvragen met de juiste cijfers.',
+  tasks:['Aankoopfacturen uit de mailbox inboeken in Exact Online, Octopus of Yuki','Elke maandag klanten herinneren aan ontbrekende stukken voor de btw-aangifte','Jaarrekening en bedrijfsgegevens ophalen bij de NBB en de KBO voor een nieuw dossier','Een klantvraag over een factuur beantwoorden met de cijfers uit het dossier'],
+  ints:[['Exact Online','Boekhouding',0,1],['Octopus','Boekhouding',1],['Yuki','Boekhouding'],['WinBooks','Boekhouding',1],['Horus','Boekhouding',1],['Silverfin','Rapportering',1],['Billit','Facturatie & Peppol',1,1],['Clearfacts','Documentverwerking',1],['CodaBox','Bankafschriften (CODA)',1],['Isabel 6 & Ponto','Bankieren',1],['Doccle','Documenten',1],['Peppol (Hermes)','E-facturatie',1],['KBO Public Search','Bedrijfsgegevens',1],['NBB Balanscentrale','Jaarrekeningen',1],['MyMinfin & Biztax','Fiscaliteit',1],['SD Worx','Sociaal secretariaat',1],['Securex','Sociaal secretariaat',1],['Partena Professional','Sociaal secretariaat',1],['Outlook','Mail & agenda',0,1],['Excel','Spreadsheets',0,1]]},
+ {id:'juridisch',name:'Juridisch & advies',sp:['star','#1a1a1a'],title:'Advocaten, notarissen en consultancy',who:['Advocatenkantoren tot 5 medewerkers','Notariskantoren','Bedrijfs- en HR-advies'],
+  intro:'Dossiers, deadlines en uren. Sprite houdt de administratie rond een dossier bij, zodat jij je tijd aan de cliënt besteedt.',
+  tasks:['Een nieuwe cliënt opzoeken in de KBO en het Staatsblad en een dossier aanmaken','Uren uit de agenda omzetten naar een gespecificeerde staat van kosten','Termijnen uit een vonnis of akte in de agenda zetten, met herinneringen','Een standaardovereenkomst opmaken in Word en laten ondertekenen via itsme'],
+  ints:[['Kleos','Praktijkbeheer'],['Legalsense','Praktijkbeheer'],['Jura','Rechtsdatabank',1],['Strada lex','Rechtsdatabank',1],['Jurisquare','Rechtsdatabank',1],['DPA','Platform advocatuur',1],['eJustice & Staatsblad','Publicaties',1],['KBO Public Search','Bedrijfsgegevens',1],['Teamleader','CRM & facturatie',1,1],['Outlook','Mail & agenda',0,1],['Word','Documenten'],['SharePoint','Dossierbeheer'],['Microsoft Teams','Overleg'],['Connective','E-handtekening',1],['itsme','Identificatie',1],['DocuSign','E-handtekening'],['Toggl Track','Tijdsregistratie'],['Calendly','Afspraken'],['Billit','Facturatie',1,1],['Personio','HR']]},
+ {id:'bouw',name:'Bouw & installatie',sp:['flower','#0A84FF'],title:'Aannemers, installateurs en renovatie',who:['Algemene aannemers','Elektriciteit, sanitair en verwarming','Renovatiebedrijven','10 tot 30 werknemers'],
+  intro:'Offertes, werven en leveranciers. Sprite werkt tussen kantoor en werf, zodat de gegevens overal dezelfde zijn.',
+  tasks:['Een offerte-aanvraag per mail omzetten naar een offerte in Robaws of Bouwsoft','Een nieuwe klant in Billit automatisch overnemen in Bouwsoft, met de werf erbij','Elke vrijdag de weekplanning naar de ploegen sturen','Prijzen opvragen bij Cebeo of Facq en het materiaal mee in de offerte zetten'],
+  ints:[['Bouwsoft','Bouwsoftware',1],['Robaws','Bouwsoftware',1,1],['Teamleader','CRM & offertes',1,1],['Billit','Facturatie',1,1],['Exact Online','Boekhouding',0,1],['Odoo','ERP',1,1],['WinBooks','Boekhouding',1],['ArchiSnapper','Werfverslagen',1],['PlanRadar','Werfopvolging'],['Checkin@Work','Aanwezigheden op de werf',1],['Constructiv','Sectorfonds bouw',1],['Cebeo','Groothandel elektro',1],['Facq','Groothandel sanitair',1],['Van Marcke','Groothandel sanitair',1],['Peppol','E-facturatie',1],['Outlook','Mail & agenda',0,1],['Gmail','Mail',0,1],['Google Calendar','Planning',0,1],['Excel','Spreadsheets',0,1],['WhatsApp Business','Klantcontact']]},
+ {id:'transport',name:'Transport & logistiek',sp:['clover','#11A89A'],title:'Transport, koeriers en verhuizers',who:['Transportbedrijven met eigen wagenpark','Koeriersdiensten','Verhuisfirma\'s','10 tot 40 werknemers'],
+  intro:'Ritten, documenten en tolheffing. Sprite verwerkt de papierwinkel rond elke rit en houdt klanten op de hoogte.',
+  tasks:['Een transportaanvraag per mail omzetten naar een rit en een prijsofferte','CMR\'s en leveringsbonnen koppelen aan de juiste factuur','Elke ochtend de vrachtbeurzen afzoeken naar retourladingen','Klanten automatisch laten weten wanneer hun zending onderweg is'],
+  ints:[['Transporeon','Vrachtplatform'],['TIMOCOM','Vrachtbeurs'],['Trans.eu','Vrachtbeurs'],['Shippeo','Track & trace'],['Webfleet','Fleetmanagement'],['Geotab','Fleetmanagement'],['Satellic','Kilometerheffing',1],['TransFollow','e-CMR'],['PLDA','Douaneaangiftes',1],['Sendcloud','Verzendingen',0,1],['bpost','Pakketten',1],['PostNL','Pakketten'],['DPD','Pakketten'],['GLS','Pakketten'],['DHL','Pakketten'],['Exact Online','Boekhouding',0,1],['Billit','Facturatie',1,1],['Teamleader','CRM & offertes',1,1],['Excel','Spreadsheets',0,1],['Outlook','Mail & agenda',0,1]]},
+ {id:'vastgoed',name:'Vastgoed',sp:['badge','#7B61FF'],title:'Makelaars, beheer en syndici',who:['Makelaarskantoren','Verhuur- en beheerkantoren','Syndici','Kleinere projectontwikkelaars'],
+  intro:'Panden, kandidaten en eigenaars. Sprite houdt je CRM, portalen en documenten gelijk en volgt elke lead meteen op.',
+  tasks:['Een nieuw pand uit Whise of Zabun publiceren op Immoweb, Zimmo en Immovlan','Elke lead binnen vijf minuten beantwoorden en een bezoek inplannen','Een huurcontract registreren via MyRent na ondertekening','Huurbetalingen opvolgen via Ponto en een herinnering sturen bij achterstand'],
+  ints:[['Whise','Vastgoed-CRM',1],['Zabun','Vastgoed-CRM',1],['Omnicasa','Vastgoed-CRM',1],['SweepBright','Vastgoed-CRM',1],['Immoweb','Vastgoedportaal',1],['Zimmo','Vastgoedportaal',1],['Immovlan','Vastgoedportaal',1],['Immoscoop','Vastgoedportaal',1],['Realo','Vastgoedportaal',1],['Smovin','Huurbeheer',1],['Rentio','Huurbeheer',1],['MyRent','Registratie huurcontracten',1],['Geopunt','Kaarten & percelen',1],['Woningpas','Woningdossier',1],['EPC-databank','Energieprestatie',1],['Billit','Facturatie',1,1],['Ponto','Huurbetalingen',1],['Connective','E-handtekening',1],['Google Calendar','Bezoeken',0,1],['Outlook','Mail & agenda',0,1]]},
+ {id:'ecommerce',name:'E-commerce & retail',sp:['blob','#E5484D'],title:'Webshops en winkels',who:['Webshops met 300 tot 1.000 bestellingen per week','Retail met fysieke winkel','Verkopers op marketplaces'],
+  intro:'Bestellingen, retouren en klantvragen. Sprite beantwoordt de vragen die elke dag terugkomen en houdt voorraad en boekhouding gelijk.',
+  tasks:['"Waar blijft mijn pakket?" beantwoorden met de track & trace uit Sendcloud','Retouren registreren, het label maken en de creditnota klaarzetten','Elke ochtend de voorraad tussen de webshop en Bol.com gelijkzetten','Slechte reviews opvolgen met een persoonlijk antwoord'],
+  ints:[['Shopify','Webshop'],['WooCommerce','Webshop'],['Lightspeed','Kassa & webshop',1],['Magento','Webshop'],['Shopware','Webshop'],['Bol.com','Marketplace'],['Amazon Seller Central','Marketplace'],['Mollie','Betalingen'],['Stripe','Betalingen'],['PayPal','Betalingen'],['Sendcloud','Verzendingen',0,1],['bpost','Pakketten',1],['Klaviyo','E-mailmarketing'],['Mailchimp','E-mailmarketing'],['Google Merchant Center','Productfeeds'],['Meta Commerce','Social shopping'],['Instagram','Social',0,1],['Trustpilot','Reviews'],['Gorgias','Klantenservice'],['Billit','Facturatie',1,1]]}
+];
+
+/* strip */
+const STRIP=['Billit','Teamleader','Robaws','Exact Online','Odoo','Gmail','Outlook','Excel','Google Drive','Bouwsoft','Whise','Sendcloud'];
+document.getElementById('strip').innerHTML=STRIP.map(n=>`<span class="tag">${mono(n)}${n}</span>`).join('')+'<span class="tag" style="padding-left:14px;color:var(--fg2)">+ 1.500 andere</span>';
+
+/* solutions */
+const SOLS=[
+ {sp:['flower','#0A84FF'],t:'Mail en klantvragen',d:'Sprite leest elke binnenkomende mail, zoekt het antwoord in het bedrijfsbrein en zet een concept klaar in jouw toon.',ex:'Een klant vraagt naar de levertermijn. Het antwoord met de juiste datum staat klaar in Gmail.',tools:['Gmail','Outlook','Teamleader']},
+ {sp:['square','#FF5A0A'],t:'Offertes en facturen',d:'Aanvraag binnen, offerte klaar. Met de juiste prijzen, kortingen en btw, rechtstreeks in je facturatiepakket.',ex:'Schilderwerken Kurt krijgt een aanvraag voor 205 m². De offerte met 10% volumekorting en 6% btw staat als concept in Billit.',tools:['Billit','Teamleader','Exact Online']},
+ {sp:['clover','#11A89A'],t:'Gegevens overzetten',d:'Wat in het ene systeem wordt ingevuld, staat meteen ook in het andere. Geen dubbel typwerk meer.',ex:'Een nieuwe klant in Billit wordt automatisch overgenomen in Bouwsoft, met de werf erbij.',tools:['Billit','Bouwsoft','Odoo']},
+ {sp:['badge','#7B61FF'],t:'Routines',d:'Taken die elke dag of week terugkomen, op een vast moment. Sprite meldt wanneer iets je aandacht nodig heeft.',ex:'Elke werkdag om 18:00 de verkoopcijfers in Excel, met de commissie per verkoper en een mail naar elk van hen.',tools:['Excel','Billit','Outlook']},
+ {sp:['star','#1a1a1a'],t:'Toon het één keer',d:'Software zonder koppeling? Film de taak of doe ze één keer voor. Sprite bedient daarna zelf de computer in een cloudbrowser.',ex:'Elk kwartaal de btw-listing ophalen uit MyMinfin en bij het juiste dossier bewaren.',tools:['MyMinfin & Biztax','KBO Public Search','Google Drive']},
+ {sp:['blob','#E5484D'],t:'Bedrijfsbrein en goedkeuring',d:'Klanten, prijsafspraken en procedures op één plek. Sprite verzint niets en vraagt je akkoord voor elke gevoelige stap.',ex:'"Zal ik de offerte naar Jan Verhaeghe sturen?" Eén tik en ze is weg.',tools:['Google Drive','Excel','Gmail']}
+];
+document.getElementById('solGrid').innerHTML=SOLS.map(s=>`<article class="sol"><div class="head"><span class="sp">${sprite(s.sp[0],s.sp[1])}</span><h3>${s.t}</h3></div><p>${s.d}</p><div class="ex"><span>Bijvoorbeeld</span>${s.ex}</div><div class="tools">${s.tools.map(n=>`<span class="tag">${mono(n)}${n}</span>`).join('')}</div></article>`).join('');
+
+/* sectors tabs */
+const tabs=document.getElementById('tabs'), panel=document.getElementById('panel');
+tabs.innerHTML=SECTORS.map((s,i)=>`<button role="tab" id="tab-${s.id}" aria-selected="${i==0}" aria-controls="panel" data-id="${s.id}"><span class="sp">${sprite(s.sp[0],s.sp[1])}</span>${s.name}</button>`).join('');
+function showSector(id){
+  const s=SECTORS.find(x=>x.id==id)||SECTORS[0];
+  tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.id==s.id));
+  panel.setAttribute('aria-labelledby','tab-'+s.id);
+  const live=s.ints.filter(x=>x[3]).length;
+  panel.innerHTML=`<div class="panel">
+   <div class="intro"><span class="sp">${sprite(s.sp[0],s.sp[1])}</span><h3>${s.title}</h3><p>${s.intro}</p>
+     <div class="who">${s.who.map(w=>`<span>${w}</span>`).join('')}</div>
+     <div class="tasks"><div class="lbl">Bijvoorbeeld</div><ul>${s.tasks.map(t=>`<li>${check}<span>${t}</span></li>`).join('')}</ul></div>
+     <a class="btn btn-primary" href="#prijzen" style="justify-self:start">Start gratis voor ${s.name.toLowerCase()}</a></div>
+   <div style="min-width:0">
+     <div class="int-head"><h4>De 20 koppelingen voor ${s.name.toLowerCase()}</h4>
+       <div class="legend"><span><i class="dotl"></i>${live} beschikbaar</span><span><i class="dotr"></i>${20-live} binnenkort</span><span><em style="font-style:normal;font-size:10.5px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 4px">BE</em> Belgisch</span></div></div>
+     <div class="ints">${s.ints.map((x,i)=>`<div class="int"><span class="left"><span class="rk">${i+1}</span>${mono(x[0])}</span><span style="min-width:0"><span class="nm">${x[0]}${x[2]?' <em>BE</em>':''}</span><span class="ct">${x[1]}</span></span><span class="st ${x[3]?'live':'soon'}">${x[3]?'Beschikbaar':'Binnenkort'}</span></div>`).join('')}</div>
+     <p class="int-foot">Staat jouw software er niet bij? Sprite werkt ook via de cloudbrowser, en in het Max-plan bouwen we koppelingen op aanvraag.</p>
+   </div></div>`;
+}
+tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;showSector(b.dataset.id);try{localStorage.setItem('sprite-sector',b.dataset.id)}catch(_){}});
+tabs.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const bs=[...tabs.querySelectorAll('button')];let i=bs.findIndex(b=>b.getAttribute('aria-selected')=='true');i=(i+(e.key=='ArrowRight'?1:-1)+bs.length)%bs.length;bs[i].focus();bs[i].click()});
+let start=SECTORS[0].id; const h=location.hash.slice(1); if(SECTORS.some(s=>s.id==h)) start=h; else {try{const v=localStorage.getItem('sprite-sector');if(v)start=v}catch(_){}}
+showSector(start);
+if(SECTORS.some(s=>s.id==h)) document.getElementById('sectoren').scrollIntoView();
+
+/* search across all integrations */
+const ALL={};SECTORS.forEach(s=>s.ints.forEach(x=>{(ALL[x[0]]=ALL[x[0]]||{n:x[0],c:x[1],be:x[2],live:x[3],s:[]}).s.push(s.name)}));
+const allList=Object.values(ALL).sort((a,b)=>b.s.length-a.s.length||a.n.localeCompare(b.n));
+const q=document.getElementById('q'),res=document.getElementById('results'),cnt=document.getElementById('count');
+function renderSearch(){const v=q.value.trim().toLowerCase();const m=v?allList.filter(x=>x.n.toLowerCase().includes(v)||x.c.toLowerCase().includes(v)):allList.slice(0,24);
+  cnt.textContent=v?(m.length?`${m.length} gevonden`:`Nog niet in onze sectorlijsten. Sprite kan er vaak al via de cloudbrowser mee werken.`):`${allList.length} prioritaire koppelingen over 6 sectoren. Een greep:`;
+  res.innerHTML=m.slice(0,40).map(x=>`<span class="tag" title="${x.s.join(', ')}">${mono(x.n)}${x.n}<small>· ${x.live?'beschikbaar':x.s.length>1?x.s.length+' sectoren':x.s[0]}</small></span>`).join('')}
+q.addEventListener('input',renderSearch);renderSearch();
+
+/* pricing */
+const PLANS=[
+ {n:'Free',f:'Je eerste Sprite',p:'€0',u:'per maand',inc:'',l:['1 Sprite','Mail doorsturen','Beperkte capaciteit'],b:'Start gratis'},
+ {n:'Pro',f:'Voor zelfstandigen',p:'€29',u:'per maand',inc:'Alles in Free, plus:',l:['Meer capaciteit','Meerdere Sprites','Alle koppelingen','Routines','Bedrijfsbrein'],b:'Kies Pro'},
+ {n:'Business',f:"Voor kmo's",p:'€99',u:'per maand',inc:'Alles in Pro, plus:',l:['Hoge capaciteit','Toon het één keer','Goedkeuringen','Cloudbrowser','Persoonlijke opvolging'],b:'Kies Business',hl:1},
+ {n:'Max',f:'Voor veel volume',p:'€249',u:'per maand',inc:'Alles in Business, plus:',l:['Hoogste capaciteit','Veel verwerking','Koppeling op aanvraag'],b:'Kies Max'},
+ {n:'Team',f:'Voor hele teams',p:'€39',u:'p.p. per maand',inc:'Voor het hele team:',l:['Per persoon','Samen met Sprite','Gedeelde Sprites','Gedeeld bedrijfsbrein'],b:'Neem contact op'}];
+document.getElementById('prices').innerHTML=PLANS.map(p=>`<div class="plan${p.hl?' hl':''}"><h3>${p.n}${p.hl?'<span>Aanrader</span>':''}</h3><div class="for">${p.f}</div><div class="pr">${p.p} <small>${p.u}</small></div><a class="btn ${p.hl?'btn-primary':'btn-ghost'}" href="#faq">${p.b}</a>${p.inc?`<div class="inc">${p.inc}</div>`:''}<ul>${p.l.map(x=>`<li>${check}<span>${x}</span></li>`).join('')}</ul></div>`).join('');
+
+/* crowd of sprites in CTA */
+const CR=[['flower','#fff'],['star','#1a1a1a'],['clover','#11A89A'],['square','#FFC72C'],['badge','#7B61FF'],['flower','#0A84FF'],['blob','#EE4592'],['sparkle','#fff'],['clover','#FFC72C'],['tri','#1a1a1a'],['flower','#11A89A'],['star','#fff'],['square','#0A84FF'],['badge','#FFC72C'],['blob','#7B61FF'],['flower','#1a1a1a']];
+document.getElementById('crowd').innerHTML=CR.map(([k,c])=>sprite(k,c,c=='#fff'||c=='#FFC72C'?'#ff5a0a':'#fff')).join('');
+</script>
